@@ -8,7 +8,7 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ result, onNewInitiative }) => {
   return (
-    <aside className="fixed left-0 top-0 h-full w-[280px] z-40 bg-[#050505] flex flex-col pt-20 pb-8 px-6 font-body text-sm antialiased border-r border-white/5 shadow-2xl">
+    <aside className="Sidebar fixed left-0 top-0 h-full w-[280px] z-40 bg-[#050505] flex flex-col pt-20 pb-8 px-6 font-body text-sm antialiased border-r border-white/5 shadow-2xl">
       <div className="flex items-center gap-4 mb-12 px-2">
         <div className="w-12 h-12 intelligence-gradient rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
           <span className="material-symbols-outlined text-on-primary-fixed text-2xl">bolt</span>

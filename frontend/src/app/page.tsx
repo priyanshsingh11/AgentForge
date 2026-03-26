@@ -42,12 +42,15 @@ export default function AgentForgeApp() {
     setResult(null);
     setLogs([]);
 
-    addLog("Initializing agent cluster 'Architecture_Primary'...");
+    addLog("Initializing Neural Strategy Cluster 'Alpha-7'...");
 
     try {
-      setTimeout(() => addLog("Accessing global market data repositories... Success."), 1000);
-      setTimeout(() => addLog(`Geocoding target location: ${location}... Coordinates identified.`), 2000);
-      setTimeout(() => addLog(`Scanning for ${query} entities in vicinity...`), 3000);
+      setTimeout(() => addLog("Parsing regional market saturation vectors... Success."), 1000);
+      setTimeout(() => addLog(`Evaluating ${query} price elasticity in ${location} quadrant.`), 2000);
+      setTimeout(() => addLog(`Identifying high-intent consumer clusters... 2.4k targets localized.`), 3000);
+      setTimeout(() => addLog("Cross-referencing digital sentiment with physical footfall data..."), 4000);
+      setTimeout(() => addLog("Simulating disruption scenarios and market entry barriers..."), 5000);
+      setTimeout(() => addLog("Finalizing 9-point Strategic Manifest..."), 6000);
 
       const response = await fetch('http://localhost:8000/api/business/analyze', {
         method: 'POST',

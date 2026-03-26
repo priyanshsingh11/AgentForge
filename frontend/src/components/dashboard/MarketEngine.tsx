@@ -21,12 +21,12 @@ export const MarketEngine: React.FC<MarketEngineProps> = ({
         <div>
           <span className="text-[10px] font-bold text-primary tracking-[.3em] uppercase mb-1 block">Operation: {query.toUpperCase().replace(' ', '_')}</span>
           <h2 className="text-4xl font-headline font-black text-on-surface tracking-tight leading-none">
-            Market Analysis Engine
+            Intelligence Command Center
           </h2>
         </div>
         <div className="flex items-center gap-3 bg-surface-container-high/50 p-2 pl-4 rounded-full border border-white/5">
           <span className={`w-2 h-2 rounded-full ${loading ? 'bg-blue-500 animate-pulse' : 'bg-emerald-500'}`}></span>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">{loading ? 'Live Execution' : 'Deployment Complete'}</span>
+          <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/60">{loading ? 'Intelligence Stream: Active' : 'Strategy Manifest: 100%'}</span>
           <button className="w-8 h-8 flex items-center justify-center bg-white/5 rounded-full hover:bg-white/10 transition-colors">
             <span className="material-symbols-outlined text-sm">more_vert</span>
           </button>

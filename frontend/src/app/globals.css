@@ -83,6 +83,66 @@ body {
       radial-gradient(at 50% 100%, rgba(137, 206, 255, 0.03) 0px, transparent 50%);
 }
 
+/* Print Styles for Professional Strategic Report */
+@media print {
+  .mesh-bg, .TopNav, .Sidebar, button, .material-symbols-outlined {
+    display: none !important;
+  }
+  
+  body, html {
+    background: white !important;
+    color: black !important;
+    height: auto !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .pl-\[280px\] {
+    padding-left: 0 !important;
+  }
+
+  .glass-panel, .bg-surface-container-lowest, .bg-surface-container-high {
+    background: white !important;
+    border: 1px solid #eee !important;
+    box-shadow: none !important;
+    color: black !important;
+  }
+
+  h1, h2, h3, h4, p, span, li {
+    color: black !important;
+  }
+
+  .intelligence-gradient {
+    background: none !important;
+    color: black !important;
+    -webkit-text-fill-color: black !important;
+    border-bottom: 2px solid black;
+  }
+
+  .grid {
+    display: block !important;
+  }
+
+  .xl\:col-span-8, .xl\:col-span-4 {
+    width: 100% !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .rounded-\[2\.5rem\], .rounded-3xl, .rounded-2xl {
+    border-radius: 0.5rem !important;
+  }
+
+  /* Force page breaks */
+  .OutputSummary {
+    page-break-before: always;
+  }
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }

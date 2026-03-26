@@ -2,7 +2,7 @@ import React from 'react';
 
 export const TopNav: React.FC = () => {
   return (
-    <nav className="fixed top-0 w-full z-50 h-16 bg-[#111417]/60 backdrop-blur-[20px] border-b border-[#424754]/15 flex justify-between items-center px-8 font-headline tracking-tight">
+    <nav className="TopNav fixed top-0 left-0 right-0 h-16 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5 z-50 px-8 flex items-center justify-between">
       <div className="flex items-center gap-8">
         <span className="text-lg font-bold tracking-[0.2em] text-[#E1E2E7] uppercase">AgentForge AI</span>
         <div className="hidden md:flex items-center gap-6">
