@@ -18,6 +18,7 @@ import { TerminalTeaser } from '../components/landing/TerminalTeaser';
 import { MarketEngine } from '../components/dashboard/MarketEngine';
 import { LiveInsights } from '../components/dashboard/LiveInsights';
 import { OutputSummary } from '../components/dashboard/OutputSummary';
+import { CompetitorList } from '../components/dashboard/CompetitorList';
 
 export default function AgentForgeApp() {
   const [query, setQuery] = useState('Coffee Shop');
@@ -90,7 +91,7 @@ export default function AgentForgeApp() {
       <TopNav />
       <Sidebar result={result} onNewInitiative={resetState} />
 
-      <main className="pl-[280px] pt-16 min-h-screen relative flex flex-col overflow-hidden">
+      <main className="pl-[280px] pt-16 h-[calc(100vh-64px)] relative flex flex-col overflow-hidden">
         <AnimatePresence mode="wait">
           {!result && !loading ? (
             <motion.div
@@ -98,7 +99,7 @@ export default function AgentForgeApp() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col items-center justify-center p-12 relative"
+              className="h-full flex flex-col items-center justify-between px-8 py-6 relative overflow-hidden"
             >
               {/* Background Accents */}
               <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
@@ -121,7 +122,7 @@ export default function AgentForgeApp() {
               key="dashboard"
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex-1 p-8 overflow-y-auto custom-scrollbar"
+              className="h-full p-8 overflow-y-auto custom-scrollbar"
             >
               <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 max-w-[1600px] mx-auto">
                 <MarketEngine
@@ -133,6 +134,7 @@ export default function AgentForgeApp() {
 
                 <div className="xl:col-span-4 flex flex-col gap-8">
                   <LiveInsights result={result} />
+                  <CompetitorList businesses={result?.analysis?.top_competitors || []} />
                   <OutputSummary result={result} />
                 </div>
               </div>

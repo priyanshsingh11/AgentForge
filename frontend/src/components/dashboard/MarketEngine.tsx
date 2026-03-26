@@ -33,7 +33,7 @@ export const MarketEngine: React.FC<MarketEngineProps> = ({
         </div>
       </div>
 
-      <div className="bg-surface-container-lowest/80 border border-outline-variant/10 rounded-[2.5rem] p-8 flex-1 min-h-[500px] font-mono flex flex-col">
+      <div className="bg-surface-container-lowest/80 border border-outline-variant/10 rounded-[2.5rem] p-8 flex-1 min-h-[400px] lg:min-h-[500px] font-mono flex flex-col">
         <div className="flex-1 space-y-4 mb-8">
            {logs.map((log, i) => (
              <div key={i} className="flex gap-4 animate-in fade-in slide-in-from-left-2 duration-500">

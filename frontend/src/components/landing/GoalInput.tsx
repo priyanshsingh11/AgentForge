@@ -8,21 +8,21 @@ interface GoalInputProps {
   handleAnalyze: (e?: React.FormEvent) => void;
 }
 
-export const GoalInput: React.FC<GoalInputProps> = ({ 
-  query, 
-  location, 
-  setQuery, 
-  setLocation, 
-  handleAnalyze 
+export const GoalInput: React.FC<GoalInputProps> = ({
+  query,
+  location,
+  setQuery,
+  setLocation,
+  handleAnalyze
 }) => {
   return (
     <div className="w-full max-w-4xl glass-panel p-3 rounded-[2.5rem] border border-white/5 shadow-[0_50px_100px_rgba(0,0,0,0.6)] relative z-10">
       <form onSubmit={handleAnalyze} className="relative flex flex-col md:flex-row items-center gap-6 bg-surface-container-lowest p-6 rounded-[2rem] border border-white/5 group hover:border-primary/20 transition-colors">
         <div className="flex-1 w-full px-4">
           <label className="block text-[10px] font-black text-primary/40 uppercase tracking-[0.3em] mb-2 ml-1">Autonomous Goal</label>
-          <input 
-            className="w-full bg-transparent border-none text-on-surface text-2xl placeholder:text-on-surface-variant/10 focus:ring-0 focus:outline-none py-1 font-body font-medium tracking-tight" 
-            placeholder="e.g., 'Analyze coffee shop competitors in North London'" 
+          <input
+            className="w-full bg-transparent border-none text-on-surface text-2xl placeholder:text-on-surface-variant/10 focus:ring-0 focus:outline-none py-1 font-body font-medium tracking-tight"
+            placeholder="e.g., 'Analyze coffee shop competitors in North London'"
             type="text"
             value={query + (location ? ` in ${location}` : '')}
             onChange={(e) => {

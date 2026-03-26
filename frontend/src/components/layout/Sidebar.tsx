@@ -31,15 +31,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ result, onNewInitiative }) => 
         <a className={`flex items-center gap-4 py-3.5 px-4 rounded-xl transition-all duration-300 ${!result ? 'bg-surface-variant/40 text-primary font-bold border-r-4 border-primary shadow-inner' : 'text-on-surface-variant/30 hover:bg-surface-variant/20 hover:text-on-surface'}`} href="#">
           <span className="material-symbols-outlined">hub</span> Agent Workspace
         </a>
-        <a className="flex items-center gap-4 py-3.5 px-4 text-on-surface-variant/30 hover:bg-surface-variant/20 hover:text-on-surface rounded-xl transition-all duration-300 cursor-pointer" href="#">
-          <span className="material-symbols-outlined">history</span> Task History
-        </a>
-        <a className="flex items-center gap-4 py-3.5 px-4 text-on-surface-variant/30 hover:bg-surface-variant/20 hover:text-on-surface rounded-xl transition-all duration-300 cursor-pointer" href="#">
-          <span className="material-symbols-outlined">model_training</span> Model Library
-        </a>
-        <a className="flex items-center gap-4 py-3.5 px-4 text-on-surface-variant/30 hover:bg-surface-variant/20 hover:text-on-surface rounded-xl transition-all duration-300 cursor-pointer" href="#">
-          <span className="material-symbols-outlined">settings</span> Settings
-        </a>
       </nav>
 
       <div className="mt-auto pt-8 border-t border-outline-variant/10 space-y-1">

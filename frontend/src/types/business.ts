@@ -17,6 +17,8 @@ export interface AnalysisResult {
     summary: string;
   };
   strategies: {
+    strengths: string[];
+    gaps: string[];
     strategies: string[];
   };
   trends: {

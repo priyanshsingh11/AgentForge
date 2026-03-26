@@ -6,9 +6,7 @@ export const TopNav: React.FC = () => {
       <div className="flex items-center gap-8">
         <span className="text-lg font-bold tracking-[0.2em] text-[#E1E2E7] uppercase">AgentForge AI</span>
         <div className="hidden md:flex items-center gap-6">
-          <a className="text-[#E1E2E7]/60 hover:text-primary hover:bg-surface-variant/30 transition-all duration-300 px-3 py-1 rounded" href="#">Explorer</a>
-          <a className="text-[#E1E2E7]/60 hover:text-primary hover:bg-surface-variant/30 transition-all duration-300 px-3 py-1 rounded" href="#">Architecture</a>
-          <a className="text-[#E1E2E7]/60 hover:text-primary hover:bg-surface-variant/30 transition-all duration-300 px-3 py-1 rounded" href="#">Collaborate</a>
+          <a className="text-primary font-bold border-b-2 border-primary transition-all duration-300 px-3 py-1" href="#">Explorer</a>
         </div>
       </div>
       <div className="flex items-center gap-4">

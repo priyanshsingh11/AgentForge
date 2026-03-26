@@ -1,19 +1,33 @@
-import React from 'react';
+import React from "react";
 
 export const Hero: React.FC = () => {
   return (
-    <div className="text-center mb-16 max-w-5xl relative z-10">
-      <div className="flex items-center justify-center gap-4 mb-8">
-        <span className="h-[1px] w-12 bg-primary/20"></span>
-        <span className="text-primary/70 font-label text-[11px] uppercase tracking-[0.5em] font-black">Architect of Tomorrow</span>
-        <span className="h-[1px] w-12 bg-primary/20"></span>
+    <section className="relative z-10 flex flex-col items-center justify-center text-center px-6 py-6 max-w-5xl mx-auto">
+
+      {/* Top Label */}
+      <div className="flex items-center justify-center gap-3 mb-4">
+        <span className="h-[1px] w-8 bg-primary/30"></span>
+        <span className="text-primary/70 text-[10px] uppercase tracking-[0.3em] font-semibold">
+          Architect of Tomorrow
+        </span>
+        <span className="h-[1px] w-8 bg-primary/30"></span>
       </div>
-      <h1 className="font-headline text-8xl md:text-9xl font-black tracking-tighter text-on-surface mb-8 leading-[0.85]">
-        Define your <br/><span className="text-transparent bg-clip-text intelligence-gradient">Intelligence.</span>
+
+      {/* Heading */}
+      <h1 className="font-headline font-black tracking-tighter text-white leading-[0.9]
+                     text-6xl sm:text-7xl md:text-8xl lg:text-9xl mb-6">
+        Define your <br />
+        <span className="bg-gradient-to-r from-purple-400 to-indigo-500 bg-clip-text text-transparent">
+          Intelligence.
+        </span>
       </h1>
-      <p className="text-on-surface-variant/60 text-xl font-medium tracking-tight max-w-2xl mx-auto leading-relaxed">
-        Deploy autonomous agents to execute complex workflows, analyze deep data structures, and architect solutions at scale.
+
+      {/* Description */}
+      <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-xl leading-relaxed">
+        Deploy autonomous agents to execute complex workflows, analyze deep data
+        structures, and architect solutions at scale.
       </p>
-    </div>
+
+    </section>
   );
 };
