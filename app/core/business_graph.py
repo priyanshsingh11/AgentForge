@@ -49,7 +49,8 @@ async def review_sentiment_node(state: BusinessAnalysisState):
 async def strategy_generator_node(state: BusinessAnalysisState):
     strategies = await strategy_generator_tool.ainvoke({
         "analysis": state["analysis"], 
-        "sentiments": state["sentiments"]
+        "sentiments": state["sentiments"],
+        "trends": state["trends"]
     })
     return {"strategies": strategies}
 
