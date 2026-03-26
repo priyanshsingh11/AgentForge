@@ -1,6 +1,10 @@
 # Dependencies
 node_modules/
 frontend/node_modules/
+package.json
+frontend/package.json
+package-lock.json
+frontend/package-lock.json
 venv/
 env/
 .env
