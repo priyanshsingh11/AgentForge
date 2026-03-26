@@ -10,6 +10,12 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     REDIS_URL: str = "redis://localhost:6379/0"
     
+    # Business Intelligence API Keys
+    GEOAPIFY_API_KEY: str = ""
+    HUGGINGFACE_API_TOKEN: str = ""
+    OPENROUTER_API_KEY: str = ""
+    TAVILY_API_KEY: str = ""
+    
     # Agent settings
     MAX_ITERATIONS: int = 5
     CRITIC_THRESHOLD: int = 8
