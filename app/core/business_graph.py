@@ -74,9 +74,9 @@ workflow.set_entry_point("local_search")
 # Add Edges (sequential pipeline)
 workflow.add_edge("local_search", "competitor_analysis")
 workflow.add_edge("competitor_analysis", "sentiment_analysis")
-workflow.add_edge("sentiment_analysis", "strategy_generation")
-workflow.add_edge("strategy_generation", "trend_analysis")
-workflow.add_edge("trend_analysis", END)
+workflow.add_edge("sentiment_analysis", "trend_analysis")
+workflow.add_edge("trend_analysis", "strategy_generation")
+workflow.add_edge("strategy_generation", END)
 
 # Compile Graph
 business_graph = workflow.compile()
