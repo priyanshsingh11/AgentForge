@@ -14,7 +14,7 @@ class GroqClient:
             "Content-Type": "application/json"
         }
 
-    async def call_llm(self, messages: List[Dict[str, str]], model: str = "llama3-8b-8192") -> Dict[str, Any]:
+    async def call_llm(self, messages: List[Dict[str, str]], model: str = "llama-3.1-8b-instant") -> Dict[str, Any]:
         """
         Calls the Groq API and returns the completion and token stats.
         """
@@ -45,7 +45,10 @@ class GroqClient:
                     "total_tokens": usage.get("total_tokens", 0)
                 }
             except Exception as e:
-                logger.error(f"Error calling Groq API: {e}")
+                if 'response' in locals():
+                    logger.error(f"Error calling Groq API: {e}. Response: {response.text}")
+                else:
+                    logger.error(f"Error calling Groq API: {e}")
                 raise e
 
 # Global instance
