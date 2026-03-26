@@ -40,9 +40,9 @@ export default function AgentForgeApp() {
     setLoading(true);
     setResult(null);
     setLogs([]);
-    
+
     addLog("Initializing agent cluster 'Architecture_Primary'...");
-    
+
     try {
       setTimeout(() => addLog("Accessing global market data repositories... Success."), 1000);
       setTimeout(() => addLog(`Geocoding target location: ${location}... Coordinates identified.`), 2000);
@@ -53,9 +53,9 @@ export default function AgentForgeApp() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query, location }),
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.detail || 'Analysis failed');
       }
@@ -93,7 +93,7 @@ export default function AgentForgeApp() {
       <main className="pl-[280px] pt-16 min-h-screen relative flex flex-col overflow-hidden">
         <AnimatePresence mode="wait">
           {!result && !loading ? (
-            <motion.div 
+            <motion.div
               key="landing"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -105,7 +105,7 @@ export default function AgentForgeApp() {
               <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-secondary/5 blur-[150px] rounded-full pointer-events-none"></div>
 
               <Hero />
-              <GoalInput 
+              <GoalInput
                 query={query}
                 location={location}
                 setQuery={setQuery}
@@ -115,20 +115,16 @@ export default function AgentForgeApp() {
               <PresetArchitectures />
               <TerminalTeaser />
 
-              {/* Floating Shape */}
-              <div className="fixed top-1/2 right-0 -translate-y-1/2 hidden xl:block w-[600px] h-[600px] opacity-60 pointer-events-none translate-x-1/4">
-                <img alt="Abstract Shape" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvz9ytd3UpJMcKPuQdI9wTmR-Z8RW5JW-Mea0Q4cPZIf1kIaACZGqwcF2DnrbgIHZ1evKsop1PM-4z5JkRjPB2SD486Qa7t4U-fo5KQSMCwzGr7nDDR41IDXgM72nt0ZzcZewEHBaWU0ziX1OERJ3DNBpIwoN37LBlb4XTUQcReCOzM83bLVWIayYAZvRpzrbGO9hjJz_3d-YlWoGreQ0-eRI8X1J2zDhYSBaXR2c3nCMajfPMoI9KcTLJrXN2mK3m3SyckHnIQdSt" />
-              </div>
             </motion.div>
           ) : (
-            <motion.div 
+            <motion.div
               key="dashboard"
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               className="flex-1 p-8 overflow-y-auto custom-scrollbar"
             >
               <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 max-w-[1600px] mx-auto">
-                <MarketEngine 
+                <MarketEngine
                   query={query}
                   loading={loading}
                   logs={logs}
