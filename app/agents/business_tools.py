@@ -115,34 +115,37 @@ async def review_sentiment_tool(reviews: List[str]) -> Dict[str, Any]:
     # Simple keyword grouping
     positive_keywords = ["good", "nice", "ambience", "great", "excellent", "fast"]
     negative_keywords = ["slow", "bad", "service", "poor", "expensive", "dirty"]
+    # Switching back to the most standard sentiment model
+    model_id = "distilbert-base-uncased-finetuned-sst-2-english"
+    hf_url = f"https://router.huggingface.co/hf-inference/models/{model_id}"
+    
+    headers = {
+        "Authorization": f"Bearer {settings.HUGGINGFACE_API_TOKEN}",
+        "Content-Type": "application/json"
+    }
+    
+    positives = []
+    negatives = []
     
     try:
         async with httpx.AsyncClient() as client:
-            # Batch process reviews (limited for free tier)
-            payload = {"inputs": reviews[:5]} # limit to 5 reviews for free tier safety
-            response = await client.post(hf_url, headers=headers, json=payload)
+            response = await client.post(hf_url, headers=headers, json={"inputs": reviews}, timeout=20.0)
             response.raise_for_status()
             results = response.json()
             
-            # The nlptown model returns a list of results (one list per input string)
-            # Each result is a list of dicts with 'label' and 'score'
+            # The distilbert model returns a list of lists of dicts
+            # [[{'label': 'POSITIVE', 'score': 0.99}], ...]
             for idx, res_list in enumerate(results):
                 if not res_list: continue
                 
-                # Check if it's a list of dicts (standard) or a single dict
-                best_res = res_list[0] if isinstance(res_list, list) else res_list
-                label = best_res.get("label", "3 stars")
+                # Sort by score to get the most confident label
+                best_res = sorted(res_list, key=lambda x: x.get("score", 0), reverse=True)[0]
+                label = best_res.get("label", "").upper()
                 
-                # Extract star rating from "X stars"
-                try:
-                    stars = int(label.split()[0])
-                except (ValueError, IndexError):
-                    stars = 3
-                    
                 review_text = reviews[idx].lower()
-                if stars >= 4:
+                if "POSITIVE" in label:
                     positives.append(review_text)
-                elif stars <= 2:
+                elif "NEGATIVE" in label:
                     negatives.append(review_text)
                     
             # Extract themes
