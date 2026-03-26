@@ -237,27 +237,28 @@ def _get_mock_sentiment(reviews: List[str]) -> Dict[str, Any]:
 @tool
 async def strategy_generator_tool(analysis: Dict[str, Any], sentiments: Dict[str, Any], trends: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Generates structured business strategies, gap analysis, and competitor strengths.
+    Generates a highly structured 9-point business strategy.
     Uses OpenRouter API for LLM processing.
     """
     prompt = f"""
-    Perform a deep strategic analysis based on the following data:
+    You are a high-level business strategy expert. Analyze this data:
     
     COMPETITOR ANALYSIS: {analysis}
     CUSTOMER SENTIMENT: {sentiments}
     MARKET TRENDS: {trends}
     
-    You must provide:
-    1. Competitor Strengths: What are they doing exceptionally well? (Array of strings)
-    2. Gap Analysis (Why you lag): Where is the current business falling short? (Array of strings)
-    3. Strategic Roadmap (How to fix): 3-5 concrete actionable steps. (Array of strings)
+    Generate a structured business strategy in JSON format with exactly these keys:
+    1. market_summary: brief overview of the current market
+    2. top_competitors: list of strongest competitors (Array of strings)
+    3. competitor_strengths: what competitors are doing well (Array of strings)
+    4. competitor_weaknesses: where competitors are lacking (Array of strings)
+    5. gap_analysis: why the user is currently behind competitors (Array of strings)
+    6. opportunities: untapped opportunities in the market (Array of strings)
+    7. actionable_steps: specific steps to improve (Array of strings)
+    8. priority_actions: top 3 actions to take immediately (Array of strings)
+    9. estimated_impact: expected impact (High/Medium/Low)
     
-    Output ONLY valid JSON in this format:
-    {{
-      "strengths": ["...", "..."],
-      "gaps": ["...", "..."],
-      "strategies": ["...", "..."]
-    }}
+    Make responses practical, realistic, and business-focused. Avoid generic advice.
     """
     
     payload = {
@@ -287,26 +288,44 @@ async def strategy_generator_tool(analysis: Dict[str, Any], sentiments: Dict[str
         return _get_mock_strategies()
 
 def _get_mock_strategies() -> Dict[str, Any]:
-    """Premium fallback for strategic insights."""
+    """Premium 9-point fallback for strategic insights."""
     return {
-        "strengths": [
+        "market_summary": "The market is currently entering a 'digital-first' consolidation phase where high-touch physical presence must be augmented by sophisticated loyalty and delivery ecosystems.",
+        "top_competitors": ["Market Leader Alpha", "Digital Disruptor X", "Premium Boutique Z"],
+        "competitor_strengths": [
             "Dominant prime real-estate footprint and visibility.",
             "High digital engagement with seamless mobile ordering.",
             "Superior workforce retention and specialized expertise."
         ],
-        "gaps": [
+        "competitor_weaknesses": [
+            "Over-reliance on legacy technology stacks causing slow pivot times.",
+            "Generic brand identity failing to capture the 'hyper-local' sentiment.",
+            "Inconsistent service quality across franchises."
+        ],
+        "gap_analysis": [
             "Underserved segments during late-night and peak-early hours.",
             "Slower adoption of sustainable, low-waste operational models.",
             "Limited personalization in digital customer loyalty journeys."
         ],
-        "strategies": [
+        "opportunities": [
+            "Emerging demand for ethically-sourced, specialized product lines.",
+            "Untapped B2B subscription potential for local corporate clusters.",
+            "Personalized AI-driven marketing based on micro-location data."
+        ],
+        "actionable_steps": [
             "Implement a hyper-local SEO strategy targeting high-intent long-tail keywords.",
             "Deploy a multi-tier loyalty program to increase customer lifetime value (LTV).",
             "Optimize operational efficiency through AI-driven inventory and staff scheduling.",
-            "Execute a 'guerilla marketing' campaign in high-traffic secondary locations.",
-            "Introduce premium 'limited edition' offerings to boost average transaction value (ATV)."
-        ]
+            "Execute a 'guerilla marketing' campaign in high-traffic secondary locations."
+        ],
+        "priority_actions": [
+            "Launch 'Limited Edition' product line to boost immediate ATV.",
+            "Onboard a localized social media influencer for community trust.",
+            "Implement staff specialized training for 'Premium Service' benchmarks."
+        ],
+        "estimated_impact": "High"
     }
+
 
 
 @tool
