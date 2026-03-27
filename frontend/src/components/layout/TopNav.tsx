@@ -1,22 +1,38 @@
 import React from 'react';
+import { useAuth } from '@/context/AuthContext';
+import Link from 'next/link';
 
 export const TopNav: React.FC = () => {
+  const { user, logout } = useAuth();
+
   return (
     <nav className="TopNav fixed top-0 left-0 right-0 h-16 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5 z-50 px-8 flex items-center justify-between">
       <div className="flex items-center gap-8">
-        <span className="text-lg font-bold tracking-[0.2em] text-[#E1E2E7] uppercase">AgentForge AI</span>
+        <Link href="/" className="text-lg font-bold tracking-[0.2em] text-[#E1E2E7] uppercase">AgentForge AI</Link>
         <div className="hidden md:flex items-center gap-6">
           <a className="text-primary font-bold border-b-2 border-primary transition-all duration-300 px-3 py-1" href="#">Explorer</a>
         </div>
       </div>
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 mr-4 text-[#E1E2E7]/60">
+          {user && <span className="text-sm font-medium">Hello, {user.name}</span>}
         </div>
-        <button className="bg-primary text-on-primary-fixed px-5 py-2 rounded-lg font-semibold active:scale-[0.98] transition-transform">
-          Sign In
-        </button>
+        {user ? (
+          <button 
+            onClick={logout}
+            className="bg-white/5 hover:bg-white/10 text-white px-5 py-2 rounded-lg font-semibold border border-white/10 active:scale-[0.98] transition-all"
+          >
+            Log Out
+          </button>
+        ) : (
+          <Link href="/login">
+            <button className="bg-primary text-on-primary-fixed px-5 py-2 rounded-lg font-semibold active:scale-[0.98] transition-transform">
+              Sign In
+            </button>
+          </Link>
+        )}
         <div className="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30">
-          <img alt="User profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMkCyJuuVGLxVvUHvks9gtb6a847lqWeeLX6bCbd-FvGSnXQwvYoMUxRDXp27Hn92GPfWOnG-SgT9ZAiJH0NR_5h9iJ33-C0G4BNypdQM7FFho8e3rfl8T7boXhkFKbQukpVzu3LTSgnAcVoDP-jBfZA0J_CXMrvVtvPiTunImRzlFnREgU_vy_KSyOoX91xtJxLueUMT6WkRqlC7NIBRXrnT2b1Ln_s4PtsPI7-vGknOvNJFF_1qz2rexJEudAKJ3bZaE02PBfvbe" />
+          <img alt="User profile" src={user ? `https://ui-avatars.com/api/?name=${user.name}&background=random` : "https://lh3.googleusercontent.com/aida-public/AB6AXuDMkCyJuuVGLxVvUHvks9gtb6a847lqWeeLX6bCbd-FvGSnXQwvYoMUxRDXp27Hn92GPfWOnG-SgT9ZAiJH0NR_5h9iJ33-C0G4BNypdQM7FFho8e3rfl8T7boXhkFKbQukpVzu3LTSgnAcVoDP-jBfZA0J_CXMrvVtvPiTunImRzlFnREgU_vy_KSyOoX91xtJxLueUMT6WkRqlC7NIBRXrnT2b1Ln_s4PtsPI7-vGknOvNJFF_1qz2rexJEudAKJ3bZaE02PBfvbe"} />
         </div>
       </div>
     </nav>
