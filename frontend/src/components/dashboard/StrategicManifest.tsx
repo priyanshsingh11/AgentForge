@@ -103,7 +103,10 @@ export const StrategicManifest: React.FC<ManifestProps> = ({ result }) => {
                       </div>
                       <div>
                         <h5 className="font-bold text-on-surface">{biz.name}</h5>
-                        <p className="text-[10px] text-on-surface-variant/40 uppercase tracking-widest mt-1">Market Share: {Math.floor(Math.random() * 15 + 10)}%</p>
+                        <div className="flex items-center gap-2 mt-1">
+                           <span className="material-symbols-outlined text-[12px] text-primary">star</span>
+                           <p className="text-[10px] text-on-surface-variant/60 uppercase tracking-widest font-black">Rating: {biz.rating || '4.0'}</p>
+                        </div>
                       </div>
                    </div>
                    <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${i === 0 ? 'bg-emerald-500/10 text-emerald-500' : i === 1 ? 'bg-blue-500/10 text-blue-500' : 'bg-purple-500/10 text-purple-500'}`}>
