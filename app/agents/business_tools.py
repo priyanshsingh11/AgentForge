@@ -70,11 +70,29 @@ async def local_search_tool(query: str, location: str) -> List[Dict[str, Any]]:
                 "restaurant": "catering.restaurant",
                 "cafe": "catering.cafe",
                 "gym": "leisure.fitness,leisure.sport_centre",
+                "fitness": "leisure.fitness",
                 "bakery": "catering.bakery",
-                "hotel": "accommodation.hotel"
+                "hotel": "accommodation.hotel",
+                "hospital": "healthcare.hospital",
+                "clinic": "healthcare.clinic",
+                "pharmacy": "healthcare.pharmacy",
+                "school": "education.school",
+                "university": "education.university",
+                "mall": "commercial.shopping_mall",
+                "supermarket": "commercial.supermarket",
+                "bank": "service.financial.bank",
+                "salon": "service.beauty",
+                "spa": "leisure.spa",
+                "clothing": "commercial.clothing",
+                "electronics": "commercial.electronics"
             }
             clean_query = query.lower().strip()
-            category = category_map.get(clean_query, "catering.cafe")
+            # Try exact match or partial match
+            category = "catering.cafe" # Default
+            for key, val in category_map.items():
+                if key in clean_query:
+                    category = val
+                    break
             
             places_url = "https://api.geoapify.com/v2/places"
             places_params = {
@@ -117,26 +135,25 @@ async def local_search_tool(query: str, location: str) -> List[Dict[str, Any]]:
         return _get_mock_businesses(query, location)
 
 def _get_mock_businesses(query: str, location: str) -> List[Dict[str, Any]]:
-    """Helper to return realistic mock data for UI excellence."""
-    logger.info(f"Generating realistic mock businesses for {query} in {location}")
-    clean_query = query.lower()
+    """Helper to return realistic mock data that adapts to any query/location."""
+    logger.info(f"Generating dynamic mock businesses for {query} in {location}")
     
-    # Try to find a matching category or default to coffee shop
-    category = "coffee shop"
-    for cat in MOCK_BUSINESS_DATA.keys():
-        if cat in clean_query:
-            category = cat
-            break
-            
-    base_data = MOCK_BUSINESS_DATA[category]
+    clean_query = query.lower().title()
+    clean_location = location.title()
+    
+    prefixes = ["The", "Elite", "Urban", "Prime", "Global", "NexGen", "Total", "Pure"]
+    suffixes = ["Hub", "Center", "Studio", "Point", "Solutions", "Dynamics", "Matrix", "Lab"]
+    
     results = []
-    for item in base_data:
-        # Add random variations to make it feel "fresh"
+    for i in range(5):
+        # Generate a name if it's not in our base data
+        name = f"{random.choice(prefixes)} {clean_query} {random.choice(suffixes)}"
+        
         results.append({
-            "name": item["name"],
-            "rating": round(random.uniform(3.5, 4.8), 1),
+            "name": name,
+            "rating": round(random.uniform(3.8, 4.9), 1),
             "reviews": None,
-            "address": item["address"] if location.lower() in item["address"].lower() else f"{item['address']}, {location}"
+            "address": f"Strategic Sector {random.randint(1, 99)}, {clean_location}"
         })
     return results
 
@@ -152,8 +169,8 @@ def competitor_analysis_tool(businesses: List[Dict[str, Any]]) -> Dict[str, Any]
     if not rated_businesses:
         return {
             "average_rating": None,
-            "top_competitors": businesses[:3],
-            "weak_competitors": businesses[-3:]
+            "top_competitors": businesses[:5],
+            "weak_competitors": businesses[-5:]
         }
         
     avg_rating = sum(b["rating"] for b in rated_businesses) / len(rated_businesses)
@@ -161,8 +178,8 @@ def competitor_analysis_tool(businesses: List[Dict[str, Any]]) -> Dict[str, Any]
     
     return {
         "average_rating": round(avg_rating, 2),
-        "top_competitors": sorted_biz[:3],
-        "weak_competitors": sorted_biz[-3:]
+        "top_competitors": sorted_biz[:5],
+        "weak_competitors": sorted_biz[-5:]
     }
 
 @tool
@@ -256,10 +273,10 @@ async def strategy_generator_tool(analysis: Dict[str, Any], sentiments: Dict[str
     3. competitor_strengths: (Array of Strings) Detail the specific operational advantages.
     4. competitor_weaknesses: (Array of Strings) Pinpoint vulnerabilities in the top competitors.
     5. gap_analysis: (Array of Strings) Rigorous explanation of why the current business is lagging.
-    6. opportunities: (Array of Strings) Identify untapped niches or emerging customer needs.
+    6. opportunities: (Array of Strings) Identify at least 4 untapped niches or emerging customer needs.
     7. actionable_steps: (Array of Strings) Prioritized sequence of tactical maneuvers.
-    8. priority_actions: (Array of Strings) The top 3 most critical 'High-Impact' actions to take in 48h.
-    9. estimated_impact: (String) Qualitative assessment of ROI (High/Medium/Low) + brief justification.
+    8. priority_actions: (Array of Strings) The top 4 most critical 'High-Impact' actions to take in 48h.
+    9. estimated_impact: (String) Extremely concise summary (max 10 words) of the core ROI (e.g., 'High Impact: 15% revenue growth in Q3').
     
     CRITICAL: Every value must be either a String or an Array of Strings. Never return nested objects.
     Avoid all generic advice and buzzwords. Talk like a CEO-level advisor.
@@ -318,7 +335,8 @@ def _get_mock_strategies() -> Dict[str, Any]:
         "opportunities": [
             "High potential in launching an ethically-sourced, 'limited batch' product line to capture the premium segment and boost brand prestige.",
             "Untapped B2B subscription potential within the surrounding corporate clusters for high-volume, recurring catering contracts.",
-            "Deployment of a community-centric 'Guerilla Marketing' strategy to undercut the high-visibility costs of the market leaders."
+            "Deployment of a community-centric 'Guerilla Marketing' strategy to undercut the high-visibility costs of the market leaders.",
+            "Strategic Tech: Integration of advanced AI personalization in the digital journey to drive 2x higher customer lifetime value (LTV)."
         ],
         "actionable_steps": [
             "Execute a hyper-local SEO and LSA (Local Service Ads) campaign targeting high-intent, long-tail search queries in the immediate 3-mile radius.",
@@ -327,11 +345,12 @@ def _get_mock_strategies() -> Dict[str, Any]:
             "Launch a strategic 'Transparency Campaign' showcasing your ethical supply chain to directly challenge the generic branding of competitors."
         ],
         "priority_actions": [
-            "Initiate a 'Premium Limited Edition' pilot program within the next 48 hours to test price elasticity and boost immediate average transaction value (ATV).",
-            "Partner with a localized micro-influencer to build authentic community trust and bypass traditional, high-cost advertising channels.",
-            "Conduct a structural audit of peak-hour staffing to align labor costs with real-time footfall patterns observed in latest sensor data."
+            "Initiate a 'Premium Limited Edition' pilot program within the next 48 hours to test price elasticity.",
+            "Partner with a localized micro-influencer to build authentic community trust quickly.",
+            "Conduct a structural audit of peak-hour staffing to align labor costs with footfall patterns.",
+            "Deploy a 48-hour flash loyalty promotion to re-activate dormant customer segments."
         ],
-        "estimated_impact": "High Strategic Impact: Expected to drive a 15-20% increase in market share within 6 months while optimizing margin by 400bps through operational efficiency."
+        "estimated_impact": "High Impact: 15-20% market share growth within 6 months."
     }
 
 
