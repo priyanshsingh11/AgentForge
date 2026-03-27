@@ -1,53 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-tertiary-container: #009ada;
-  --color-secondary-fixed: #e9ddff;
-  --color-primary-fixed-dim: #adc6ff;
-  --color-on-primary-container: #00285d;
-  --color-surface-container: #1d2023;
-  --color-surface: #111417;
-  --color-on-primary-fixed-variant: #004395;
-  --color-surface-container-lowest: #0b0e11;
-  --color-secondary-fixed-dim: #d0bcff;
-  --color-inverse-primary: #005ac2;
-  --color-secondary: #d0bcff;
-  --color-on-primary-fixed: #001a42;
-  --color-on-error: #690005;
-  --color-primary-container: #4d8eff;
-  --color-on-surface-variant: #c2c6d6;
-  --color-outline: #8c909f;
-  --color-inverse-surface: #e1e2e7;
-  --color-on-surface: #e1e2e7;
-  --color-tertiary-fixed: #c9e6ff;
-  --color-surface-variant: #323538;
-  --color-on-tertiary: #00344d;
-  --color-on-tertiary-fixed-variant: #004c6e;
-  --color-background: #111417;
-  --color-tertiary-fixed-dim: #89ceff;
-  --color-tertiary: #89ceff;
-  --color-primary-fixed: #d8e2ff;
-  --color-error: #ffb4ab;
-  --color-outline-variant: #424754;
-  --color-surface-container-high: #272a2e;
-  --color-primary: #adc6ff;
-  --color-on-primary: #002e6a;
-  --color-error-container: #93000a;
-  --color-on-tertiary-container: #002d43;
-  --color-on-secondary-fixed-variant: #5516be;
-  --color-surface-bright: #37393d;
-  --color-inverse-on-surface: #2e3134;
-  --color-on-secondary-container: #c4abff;
-  --color-surface-container-highest: #323538;
-  --color-on-secondary-fixed: #23005c;
-  --color-secondary-container: #571bc1;
-  --color-on-secondary: #3c0091;
-  --color-on-background: #e1e2e7;
-  --color-on-error-container: #ffdad6;
-  --color-surface-tint: #adc6ff;
-  --color-on-tertiary-fixed: #001e2f;
-  --color-surface-container-low: #191c1f;
-  --color-surface-dim: #111417;
+  --color-surface-container: #1e293b;
+  --color-surface: #0f172a;
+  --color-surface-container-lowest: #020617;
+  --color-on-surface-variant: #64748b;
+  --color-inverse-surface: #f8fafc;
+  --color-on-surface: #f1f5f9;
+  --color-background: #020617;
+  --color-primary: #818cf8;
+  --color-on-primary: #ffffff;
+  --color-secondary: #334155;
+  --color-on-secondary: #f8fafc;
+  --color-on-background: #f1f5f9;
+  --color-surface-container-high: #334155;
+  --color-outline: #475569;
+  --color-outline-variant: #1e293b;
 
   --font-headline: "Manrope", sans-serif;
   --font-body: "Inter", sans-serif;
@@ -55,8 +23,8 @@
 }
 
 :root {
-  --background: #111417;
-  --foreground: #e1e2e7;
+  --background: #020617;
+  --foreground: #f1f5f9;
 }
 
 body {
@@ -66,21 +34,22 @@ body {
 }
 
 .intelligence-gradient {
-  background: linear-gradient(135deg, #ADC6FF 0%, #D0BCFF 100%);
+  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
 }
 
 .glass-panel {
-  background: rgba(50, 53, 56, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .mesh-bg {
-  background-color: #111417;
+  background-color: #020617;
   background-image: 
-      radial-gradient(at 0% 0%, rgba(173, 198, 255, 0.05) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(208, 188, 255, 0.05) 0px, transparent 50%),
-      radial-gradient(at 50% 100%, rgba(137, 206, 255, 0.03) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.03) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(99, 102, 241, 0.03) 0px, transparent 50%);
 }
 
 /* Print Styles for Professional Strategic Report */

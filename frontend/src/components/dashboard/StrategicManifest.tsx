@@ -68,17 +68,17 @@ export const StrategicManifest: React.FC<ManifestProps> = ({ result }) => {
                </div>
             </div>
 
-            <div className="lg:col-span-4 glass-panel border border-white/5 bg-primary/5 rounded-[3rem] p-10 relative overflow-hidden">
-               <span className="material-symbols-outlined absolute -top-4 -right-4 text-primary/5 text-[10rem] rotate-12 select-none">priority_high</span>
+            <div className={`lg:col-span-4 glass-panel border border-white/10 rounded-[3rem] p-10 relative overflow-hidden`}>
+               <span className="material-symbols-outlined absolute -top-4 -right-4 text-primary/5 text-[10rem] rotate-12 select-none">bolt</span>
                <h3 className="text-3xl font-headline font-black text-on-surface mb-10 flex items-center justify-between">
-                  Top 4 Priorities
-                  <span className="material-symbols-outlined text-primary">warning</span>
+                  Growth Priorities
+                  <span className="material-symbols-outlined text-primary">priority_high</span>
                </h3>
                <div className="space-y-10">
                   {strategies.priority_actions.slice(0, 4).map((item, i) => (
                      <div key={i} className="flex gap-6 items-start group">
                         <span className="text-4xl font-headline font-black text-primary/20 group-hover:text-primary transition-colors">0{i + 1}</span>
-                        <p className="text-sm font-bold text-on-surface/70 leading-relaxed group-hover:text-on-surface transition-colors">
+                        <p className="text-sm font-bold text-on-surface/70 leading-relaxed pt-1 group-hover:text-on-surface transition-colors">
                            {item}
                         </p>
                      </div>

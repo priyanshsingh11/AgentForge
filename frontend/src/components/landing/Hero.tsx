@@ -17,7 +17,7 @@ export const Hero: React.FC = () => {
       <h1 className="font-headline font-black tracking-tighter text-white leading-[0.9]
                      text-6xl sm:text-7xl md:text-8xl lg:text-9xl mb-6">
         Scale your <br />
-        <span className="bg-gradient-to-r from-purple-400 to-indigo-500 bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-indigo-400 to-sky-400 bg-clip-text text-transparent">
           Growth.
         </span>
       </h1>
