@@ -22,8 +22,8 @@ import { CompetitorList } from '../components/dashboard/CompetitorList';
 import { StrategicManifest } from '../components/dashboard/StrategicManifest';
 
 export default function AgentForgeApp() {
-  const [query, setQuery] = useState('Coffee Shop');
-  const [location, setLocation] = useState('Greater Noida');
+  const [query, setQuery] = useState('');
+  const [location, setLocation] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isMounted, setIsMounted] = useState(false);

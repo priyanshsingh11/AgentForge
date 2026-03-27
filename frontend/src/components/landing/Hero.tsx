@@ -8,7 +8,7 @@ export const Hero: React.FC = () => {
       <div className="flex items-center justify-center gap-3 mb-4">
         <span className="h-[1px] w-8 bg-primary/30"></span>
         <span className="text-primary/70 text-[10px] uppercase tracking-[0.3em] font-semibold">
-          Architect of Tomorrow
+          Strategic Business Intelligence
         </span>
         <span className="h-[1px] w-8 bg-primary/30"></span>
       </div>
@@ -16,18 +16,16 @@ export const Hero: React.FC = () => {
       {/* Heading */}
       <h1 className="font-headline font-black tracking-tighter text-white leading-[0.9]
                      text-6xl sm:text-7xl md:text-8xl lg:text-9xl mb-6">
-        Define your <br />
+        Scale your <br />
         <span className="bg-gradient-to-r from-purple-400 to-indigo-500 bg-clip-text text-transparent">
-          Intelligence.
+          Growth.
         </span>
       </h1>
 
       {/* Description */}
-      <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-xl leading-relaxed">
-        Deploy autonomous agents to execute complex workflows, analyze deep data
-        structures, and architect solutions at scale.
+      <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-none leading-relaxed">
+        Autonomous AI agents to analyze market dynamics and scale your business growth with strategic intelligence.
       </p>
-
     </section>
   );
 };

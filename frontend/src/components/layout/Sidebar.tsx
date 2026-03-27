@@ -33,11 +33,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ result, onNewInitiative }) => 
         </a>
       </nav>
 
-      <div className="mt-auto pt-8 border-t border-outline-variant/10 space-y-1">
-        <a className="flex items-center gap-3 py-2 px-4 text-on-surface-variant/40 hover:text-on-surface transition-colors" href="#">
+      <div className="mt-auto pt-8 border-t border-white/5 space-y-1">
+        <a className="flex items-center gap-3 py-2 px-4 text-on-surface-variant/30 hover:text-on-surface hover:bg-white/5 rounded-lg transition-all" href="#">
+          <span className="material-symbols-outlined text-sm">settings</span> Settings
+        </a>
+        <a className="flex items-center gap-3 py-2 px-4 text-on-surface-variant/30 hover:text-on-surface hover:bg-white/5 rounded-lg transition-all" href="#">
           <span className="material-symbols-outlined text-sm">pulse_alert</span> System Health
         </a>
-        <a className="flex items-center gap-3 py-2 px-4 text-on-surface-variant/40 hover:text-on-surface transition-colors" href="#">
+        <a className="flex items-center gap-3 py-2 px-4 text-on-surface-variant/30 hover:text-on-surface hover:bg-white/5 rounded-lg transition-all" href="#">
           <span className="material-symbols-outlined text-sm">description</span> Documentation
         </a>
       </div>
