@@ -8,3 +8,5 @@ pydantic[email]
 redis
 chromadb
 httpx
+passlib[bcrypt]
+python-jose[cryptography]

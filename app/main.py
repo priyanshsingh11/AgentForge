@@ -7,7 +7,7 @@ from app.core.config import settings
 from app.db.connection import get_db, engine
 from app.db.models import Base
 from app.db.crud import crud
-from app.routes import business_routes, task_routes
+from app.routes import business_routes, task_routes, auth
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 
