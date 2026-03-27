@@ -19,6 +19,7 @@ import { MarketEngine } from '../components/dashboard/MarketEngine';
 import { LiveInsights } from '../components/dashboard/LiveInsights';
 import { OutputSummary } from '../components/dashboard/OutputSummary';
 import { CompetitorList } from '../components/dashboard/CompetitorList';
+import { StrategicManifest } from '../components/dashboard/StrategicManifest';
 
 export default function AgentForgeApp() {
   const [query, setQuery] = useState('Coffee Shop');
@@ -26,31 +27,18 @@ export default function AgentForgeApp() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isMounted, setIsMounted] = useState(false);
-  const [logs, setLogs] = useState<string[]>([]);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const addLog = (msg: string) => {
-    setLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`]);
-  };
 
   const handleAnalyze = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     setLoading(true);
     setResult(null);
-    setLogs([]);
-
-    addLog("Initializing Neural Strategy Cluster 'Alpha-7'...");
 
     try {
-      setTimeout(() => addLog("Parsing regional market saturation vectors... Success."), 1000);
-      setTimeout(() => addLog(`Evaluating ${query} price elasticity in ${location} quadrant.`), 2000);
-      setTimeout(() => addLog(`Identifying high-intent consumer clusters... 2.4k targets localized.`), 3000);
-      setTimeout(() => addLog("Cross-referencing digital sentiment with physical footfall data..."), 4000);
-      setTimeout(() => addLog("Simulating disruption scenarios and market entry barriers..."), 5000);
-      setTimeout(() => addLog("Finalizing 9-point Strategic Manifest..."), 6000);
 
       const response = await fetch('http://localhost:8000/api/business/analyze', {
         method: 'POST',
@@ -64,16 +52,10 @@ export default function AgentForgeApp() {
         throw new Error(data.detail || 'Analysis failed');
       }
 
-      setTimeout(() => {
-        addLog("Cross-referencing sentiment scores with market benchmarks...");
-        addLog("Generating visual heatmaps for geographic saturation...");
-        addLog("Neural weights adjusted for specific industry vertical.");
-        setResult(data);
-        setLoading(false);
-      }, 4000);
+      setResult(data);
+      setLoading(false);
 
     } catch (error: any) {
-      addLog(`CRITICAL ERROR: ${error.message}`);
       console.error('Analysis failed:', error);
       alert(`Analysis failed: ${error.message}`);
       setLoading(false);
@@ -86,7 +68,6 @@ export default function AgentForgeApp() {
     setResult(null);
     setQuery('');
     setLocation('');
-    setLogs([]);
   };
 
   return (
@@ -127,20 +108,23 @@ export default function AgentForgeApp() {
               animate={{ opacity: 1, scale: 1 }}
               className="h-full p-8 overflow-y-auto custom-scrollbar"
             >
-              <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 max-w-[1600px] mx-auto">
-                <MarketEngine
-                  query={query}
-                  loading={loading}
-                  logs={logs}
-                  result={result}
-                />
+              {result ? (
+                <StrategicManifest result={result} />
+              ) : (
+                <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 max-w-[1600px] mx-auto">
+                  <MarketEngine
+                    query={query}
+                    loading={loading}
+                    result={result}
+                  />
 
-                <div className="xl:col-span-4 flex flex-col gap-8">
-                  <LiveInsights result={result} />
-                  <CompetitorList businesses={result?.analysis?.top_competitors || []} />
-                  <OutputSummary result={result} />
+                  <div className="xl:col-span-4 flex flex-col gap-8">
+                    <LiveInsights result={null} />
+                    <CompetitorList businesses={[]} />
+                    <OutputSummary result={null} />
+                  </div>
                 </div>
-              </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
