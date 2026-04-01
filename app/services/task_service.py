@@ -8,23 +8,15 @@ import datetime
 
 class TaskService:
     @staticmethod
-    async def create_user_if_not_exists(db: AsyncSession, name: str, email: str) -> User:
-        result = await db.execute(select(User).where(User.email == email))
-        user = result.scalars().first()
-        if not user:
-            user = User(name=name, email=email)
-            db.add(user)
-            await db.commit()
-            await db.refresh(user)
-        return user
-
-    @staticmethod
-    async def create_task(db: AsyncSession, user_id: int, goal: str) -> Task:
-        # Check if user exists
+    async def create_task(db: AsyncSession, user_id: str, goal: str) -> Task:
+        # Check if user exists in local DB, create a stub if not (using Supabase UUID)
         result = await db.execute(select(User).where(User.id == user_id))
         user = result.scalars().first()
         if not user:
-            raise HTTPException(status_code=404, detail="User not found")
+            # We create a local shadow record for relations
+            user = User(id=user_id, name="User", email=f"{user_id}@supabase.com")
+            db.add(user)
+            await db.flush()
 
         # Create Task
         new_task = Task(user_id=user_id, goal=goal, status=StatusEnum.PENDING)
@@ -44,7 +36,7 @@ class TaskService:
         return new_task
 
     @staticmethod
-    async def get_tasks_by_user(db: AsyncSession, user_id: int) -> List[Task]:
+    async def get_tasks_by_user(db: AsyncSession, user_id: str) -> List[Task]:
         result = await db.execute(select(Task).where(Task.user_id == user_id))
         return result.scalars().all()
 

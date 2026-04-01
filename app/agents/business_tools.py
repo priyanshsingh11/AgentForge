@@ -258,28 +258,28 @@ async def strategy_generator_tool(analysis: Dict[str, Any], sentiments: Dict[str
     Uses OpenRouter API for LLM processing.
     """
     prompt = f"""
-    You are a high-level business strategy expert and market analyst.
-    Based on the provided data, generate an exhaustive strategic analysis.
+    You are a friendly and helpful business coach. 
+    Look at the data provided and give simple, clear, and easy-to-follow advice to help a small business owner grow.
+    Avoid using complicated business words or jargon. Use words that anyone can understand.
     
     DATA PROVIDED:
     - COMPETITOR ANALYSIS: {analysis}
     - CUSTOMER SENTIMENT: {sentiments}
     - MARKET TRENDS: {trends}
     
-    Your output must be a valid JSON object with these EXACT keys. Do NOT include numeric prefixes (like '1.') in the keys.
+    Your output must be a valid JSON object with these EXACT keys:
     
-    1. market_summary: (String) A high-level synthesis of the current competitive landscape.
-    2. top_competitors: (Array of Strings) Identify the most significant threats.
-    3. competitor_strengths: (Array of Strings) Detail the specific operational advantages.
-    4. competitor_weaknesses: (Array of Strings) Pinpoint vulnerabilities in the top competitors.
-    5. gap_analysis: (Array of Strings) Rigorous explanation of why the current business is lagging.
-    6. opportunities: (Array of Strings) Identify at least 4 untapped niches or emerging customer needs.
-    7. actionable_steps: (Array of Strings) Prioritized sequence of tactical maneuvers.
-    8. priority_actions: (Array of Strings) The top 4 most critical 'High-Impact' actions to take in 48h.
-    9. estimated_impact: (String) Extremely concise summary (max 10 words) of the core ROI (e.g., 'High Impact: 15% revenue growth in Q3').
+    1. market_summary: (String) A simple explanation of what is happening in the local market.
+    2. top_competitors: (Array of Strings) Who are the main businesses nearby that people go to?
+    3. competitor_strengths: (Array of Strings) What are they doing well that people like?
+    4. competitor_weaknesses: (Array of Strings) What are they missing or doing poorly?
+    5. gap_analysis: (Array of Strings) What can our business do better than them right now?
+    6. opportunities: (Array of Strings) 4 easy ways to get more customers.
+    7. actionable_steps: (Array of Strings) Simple steps to take this week to improve.
+    8. priority_actions: (Array of Strings) The 4 most important things to do in the next 2 days.
+    9. estimated_impact: (String) A very short note on how much this will help (e.g., 'This should help you get 10% more sales soon').
     
-    CRITICAL: Every value must be either a String or an Array of Strings. Never return nested objects.
-    Avoid all generic advice and buzzwords. Talk like a CEO-level advisor.
+    CRITICAL: Keep the language simple, like you are talking to a friend who owns a shop.
     """
     
     payload = {
@@ -309,48 +309,48 @@ async def strategy_generator_tool(analysis: Dict[str, Any], sentiments: Dict[str
         return _get_mock_strategies()
 
 def _get_mock_strategies() -> Dict[str, Any]:
-    """Premium 9-point fallback with deep strategic reasoning."""
+    """Simple and easy fallback strategies for business owners."""
     return {
-        "market_summary": "The regional market is currently transitioning into a 'hyper-local convenience' phase, where consumer loyalty is increasingly driven by digital accessibility and perceived brand ethics rather than just proximity. We observe a significant consolidation among legacy players who are failing to adapt their supply chains to the rising demand for specialized, sustainably-sourced inventory.",
+        "market_summary": "People in your area are looking for more friendly and easy ways to buy things. Many old shops are not using the internet well, and customers want things to be faster and simpler.",
         "top_competitors": [
-            "Market Leader Alpha: Holds 40% share through prime real-estate and high-volume operations.",
-            "Digital Disruptor X: A tech-first entrant winning the Gen-Z demographic via seamless mobile-app integration.",
-            "Premium Boutique Z: Dominates the high-margin secondary tier with exceptional service benchmarks."
+            "Big Shop Nearby: They have a lot of space but are not very friendly.",
+            "Online App Stores: They are fast but don't feel like a local community.",
+            "Premium Cafe: They have great items but are very expensive."
         ],
         "competitor_strengths": [
-            "Dominant prime real-estate footprint providing high organic visibility and lower customer acquisition costs.",
-            "Integrated digital ecosystems that leverage predictive analytics for personalized mobile ordering and retention.",
-            "Superior workforce retention strategies that ensure consistent, specialized expertise at the point of service."
+            "They are in a very good spot where many people walk by.",
+            "They have an easy-to-use phone app for ordering.",
+            "Their staff is trained to be very fast with orders."
         ],
         "competitor_weaknesses": [
-            "Over-reliance on legacy technology stacks and archaic inventory systems, leading to substantial pivot lag during market shifts.",
-            "Generic corporate brand identities that are increasingly failing to capture the growing trend toward 'hyper-local' community sentiment.",
-            "Structural operational friction caused by rigid franchise models, resulting in inconsistent service quality across varying locations."
+            "They use old machines that break down often.",
+            "They don't really talk to the local community correctly.",
+            "Their prices are way too high for many regular people."
         ],
         "gap_analysis": [
-            "Significant service deficit during late-night and peak early-morning hours, representing a 15% revenue leakage to minor competitors.",
-            "Critically slow adoption of sustainable, 'zero-waste' operational models which are currently the primary decision driver for 30% of local consumers.",
-            "The current digital journey lacks the 'intelligence-driven' personalization that competitors are using to drive 2x higher customer lifetime value (LTV)."
+            "No one is open late at night or very early in the morning when people need items.",
+            "None of them use eco-friendly bags or items which people now want.",
+            "They don't remember their regular customers or give them special deals."
         ],
         "opportunities": [
-            "High potential in launching an ethically-sourced, 'limited batch' product line to capture the premium segment and boost brand prestige.",
-            "Untapped B2B subscription potential within the surrounding corporate clusters for high-volume, recurring catering contracts.",
-            "Deployment of a community-centric 'Guerilla Marketing' strategy to undercut the high-visibility costs of the market leaders.",
-            "Strategic Tech: Integration of advanced AI personalization in the digital journey to drive 2x higher customer lifetime value (LTV)."
+            "Start selling some special local items that no one else has.",
+            "Deliver to offices nearby so workers don't have to leave.",
+            "Use simple social media posts to show the 'behind the scenes' of your shop.",
+            "Make a very simple 'Buy 5, Get 1 Free' card for regulars."
         ],
         "actionable_steps": [
-            "Execute a hyper-local SEO and LSA (Local Service Ads) campaign targeting high-intent, long-tail search queries in the immediate 3-mile radius.",
-            "Immediately deploy a multi-tier, AI-driven loyalty program designed to incentivize high-frequency engagement and capture granular consumer data.",
-            "Redesign the operational workflow using predictive inventory modeling to eliminate peak-hour stockouts and reduce overhead by 12%.",
-            "Launch a strategic 'Transparency Campaign' showcasing your ethical supply chain to directly challenge the generic branding of competitors."
+            "Clean up the front of the shop and put up a nice, clear sign.",
+            "Start a simple WhatsApp group for your best customers to share deals.",
+            "Improve how fast you serve people during the lunch rush.",
+            "Ask 5 customers today what they wish you sold."
         ],
         "priority_actions": [
-            "Initiate a 'Premium Limited Edition' pilot program within the next 48 hours to test price elasticity.",
-            "Partner with a localized micro-influencer to build authentic community trust quickly.",
-            "Conduct a structural audit of peak-hour staffing to align labor costs with footfall patterns.",
-            "Deploy a 48-hour flash loyalty promotion to re-activate dormant customer segments."
+            "Put a 'Deal of the Day' board outside your door tomorrow.",
+            "Post one nice photo of your best product on Instagram.",
+            "Check if your shop shows up correctly on Google Maps.",
+            "Give a small free sample to anyone who comes in tomorrow."
         ],
-        "estimated_impact": "High Impact: 15-20% market share growth within 6 months."
+        "estimated_impact": "This should help you see more people in your shop and grow your sales by about 10%."
     }
 
 
@@ -387,3 +387,14 @@ async def web_search_tool(query: str) -> Dict[str, Any]:
                 "Increased focus on personalized customer journeys powered by predictive analytics."
             ]
         }
+def get_business_tools():
+    """
+    Returns a list of all tools in this module for LangGraph integration.
+    """
+    return [
+        local_search_tool, 
+        competitor_analysis_tool, 
+        review_sentiment_tool, 
+        strategy_generator_tool, 
+        web_search_tool
+    ]

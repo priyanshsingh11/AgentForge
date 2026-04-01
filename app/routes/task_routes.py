@@ -8,20 +8,8 @@ from typing import List, Optional
 router = APIRouter(prefix="/task", tags=["Tasks"])
 
 class TaskCreate(BaseModel):
-    user_id: int
+    user_id: str
     goal: str
-
-class UserCreate(BaseModel):
-    name: str
-    email: EmailStr
-
-@router.post("/users")
-async def create_user(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
-    try:
-        user = await TaskService.create_user_if_not_exists(db, user_data.name, user_data.email)
-        return {"id": user.id, "name": user.name, "email": user.email}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/create")
 async def create_task(task_data: TaskCreate, db: AsyncSession = Depends(get_db)):
@@ -34,7 +22,7 @@ async def create_task(task_data: TaskCreate, db: AsyncSession = Depends(get_db))
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/list/{user_id}")
-async def get_user_tasks(user_id: int, db: AsyncSession = Depends(get_db)):
+async def get_user_tasks(user_id: str, db: AsyncSession = Depends(get_db)):
     try:
         tasks = await TaskService.get_tasks_by_user(db, user_id)
         return [{"id": t.id, "goal": t.goal, "status": t.status} for t in tasks]
