@@ -4,9 +4,10 @@ import { AnalysisResult } from '../../types/business';
 interface SidebarProps {
   result: AnalysisResult | null;
   onNewInitiative: () => void;
+  onShowHistory: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ result, onNewInitiative }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ result, onNewInitiative, onShowHistory }) => {
   return (
     <aside className="Sidebar fixed left-0 top-0 h-full w-[280px] z-40 bg-[#050505] flex flex-col pt-20 pb-8 px-6 font-body text-sm antialiased border-r border-white/5 shadow-2xl">
       <div className="flex items-center gap-4 mb-12 px-2">
@@ -34,6 +35,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ result, onNewInitiative }) => 
       </nav>
 
       <div className="mt-auto pt-8 border-t border-white/5 space-y-1">
+        <button 
+          onClick={onShowHistory}
+          className="w-full flex items-center gap-3 py-2 px-4 text-on-surface-variant/30 hover:text-on-surface hover:bg-white/5 rounded-lg transition-all text-left"
+        >
+          <span className="material-symbols-outlined text-sm">history</span> History
+        </button>
         <a className="flex items-center gap-3 py-2 px-4 text-on-surface-variant/30 hover:text-on-surface hover:bg-white/5 rounded-lg transition-all" href="#">
           <span className="material-symbols-outlined text-sm">settings</span> Settings
         </a>

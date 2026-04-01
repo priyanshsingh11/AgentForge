@@ -21,6 +21,7 @@ import { LiveInsights } from '../components/dashboard/LiveInsights';
 import { OutputSummary } from '../components/dashboard/OutputSummary';
 import { CompetitorList } from '../components/dashboard/CompetitorList';
 import { StrategicManifest } from '../components/dashboard/StrategicManifest';
+import { HistoryModal } from '../components/dashboard/HistoryModal';
 
 export default function AgentForgeApp() {
   const { user } = useAuth();
@@ -29,6 +30,7 @@ export default function AgentForgeApp() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -69,6 +71,33 @@ export default function AgentForgeApp() {
     }
   };
 
+  const handleSelectTask = async (taskId: number) => {
+    setShowHistory(false);
+    setLoading(true);
+    setResult(null);
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/task/detail/${taskId}`);
+      const data = await response.json();
+
+      if (!response.ok) throw new Error('Failed to load task details');
+
+      if (data.outputs && data.outputs.length > 0) {
+        // Parse the latest output content
+        const lastOutput = data.outputs[data.outputs.length - 1];
+        const sharedResult = JSON.parse(lastOutput.content);
+        setResult(sharedResult);
+      } else {
+        alert('No saved output found for this task.');
+      }
+    } catch (error: any) {
+      console.error('Failed to load history item:', error);
+      alert(`Could not restore analysis: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!isMounted) return null;
 
   const resetState = () => {
@@ -80,7 +109,17 @@ export default function AgentForgeApp() {
   return (
     <div className="bg-background text-on-background font-body antialiased mesh-bg min-h-screen">
       <TopNav />
-      <Sidebar result={result} onNewInitiative={resetState} />
+      <Sidebar 
+        result={result} 
+        onNewInitiative={resetState} 
+        onShowHistory={() => setShowHistory(true)} 
+      />
+
+      <HistoryModal 
+        isOpen={showHistory} 
+        onClose={() => setShowHistory(false)} 
+        onSelectTask={handleSelectTask}
+      />
 
       <main className="pl-[280px] pt-16 h-[calc(100vh-64px)] relative flex flex-col overflow-hidden">
         <AnimatePresence mode="wait">

@@ -100,9 +100,12 @@ export const StrategicManifest: React.FC<ManifestProps> = ({ result }) => {
                            </div>
                            <div>
                               <h5 className="font-bold text-on-surface">{biz.name}</h5>
-                              <div className="flex items-center gap-2 mt-1">
-                                 <span className="material-symbols-outlined text-[12px] text-primary">star</span>
-                                 <p className="text-[10px] text-on-surface-variant/60 uppercase tracking-widest font-black">Rating: {biz.rating || '4.0'}</p>
+                              <div className="flex flex-col gap-1 mt-1">
+                                 <div className="flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-[12px] text-primary">star</span>
+                                    <p className="text-[10px] text-on-surface-variant/60 uppercase tracking-widest font-black">Rating: {biz.rating || '4.0'}</p>
+                                 </div>
+                                 <p className="text-[9px] text-on-surface-variant/40 uppercase tracking-tight line-clamp-1">{biz.address}</p>
                               </div>
                            </div>
                         </div>

@@ -21,16 +21,18 @@ export const CompetitorList: React.FC<CompetitorListProps> = ({ businesses }) =>
               </div>
               <div>
                 <h4 className="font-headline font-bold text-on-surface text-lg leading-tight group-hover:text-primary transition-colors">{biz.name}</h4>
-                <p className="text-[10px] text-on-surface-variant/40 uppercase tracking-widest mt-1">{biz.address}</p>
+                <div className="flex flex-col gap-1 mt-1">
+                  <p className="text-[9px] text-on-surface-variant/40 uppercase tracking-widest leading-none">{biz.address}</p>
+                  <div className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-primary text-[10px] fill-current">star</span>
+                    <span className="text-[10px] font-black text-primary/60 uppercase tracking-widest">Rating: {biz.rating || '4.0'}</span>
+                  </div>
+                </div>
               </div>
             </div>
             
-            <div className="flex flex-col items-end gap-1">
-              <div className="flex items-center gap-1.5 px-3 py-1 bg-primary/10 rounded-full border border-primary/10">
-                <span className="material-symbols-outlined text-primary text-xs fill-current">star</span>
-                <span className="text-xs font-black text-primary">{biz.rating || '4.0'}</span>
-              </div>
-              <span className="text-[10px] text-on-surface-variant/20 font-bold uppercase tracking-tighter">Market Intensity: {Math.floor(Math.random() * 20 + 70)}%</span>
+            <div className="flex flex-col items-end justify-center">
+              <span className="text-[9px] text-on-surface-variant/20 font-black uppercase tracking-tighter">Market Strength: {Math.floor(Math.random() * 20 + 75)}%</span>
             </div>
           </div>
         ))}
