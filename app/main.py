@@ -6,9 +6,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.db.connection import get_db, engine
 from app.db.models import Base
-from app.db.crud import crud
 from app.routes import business_routes, task_routes
 from sqlalchemy.ext.asyncio import AsyncSession
+from contextlib import asynccontextmanager
+from sqlalchemy import text
 from pydantic import BaseModel
 
 # Configure logging
@@ -51,14 +52,30 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={"message": "An internal server error occurred.", "detail": str(exc)},
     )
 
-@app.on_event("startup")
-async def startup_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Initialize the database
     try:
         async with engine.begin() as conn:
+            # 1. First, try to add the supabase_uid column if it's missing (self-healing)
+            try:
+                await conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS supabase_uid VARCHAR(255) UNIQUE;"))
+                logger.info("Checked/Added supabase_uid column to users table.")
+            except Exception as e:
+                logger.warning(f"Self-healing column addition skipped or failed: {e}")
+
+            # 2. Run standard metadata creation (for new tables)
             await conn.run_sync(Base.metadata.create_all)
-        logger.info("Database initialized successfully")
+            
+        logger.info("Database connection and schema verified successfully.")
     except Exception as e:
         logger.error(f"Error during database initialization: {e}")
+    
+    yield
+    # Shutdown logic (if any) can go here
+    logger.info("Backend server shutting down.")
+
+app.router.lifespan_context = lifespan
 
 @app.get("/", tags=["Health"])
 async def health_check():

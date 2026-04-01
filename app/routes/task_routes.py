@@ -35,7 +35,7 @@ async def get_task_details(task_id: int, db: AsyncSession = Depends(get_db)):
         task = await TaskService.get_task_details(db, task_id)
         return {
             "id": task.id,
-            "user_id": task.user_id,
+            "user_id": task.user.supabase_uid,
             "goal": task.goal,
             "status": task.status,
             "steps": [{"id": s.id, "step_number": s.step_number, "agent_type": s.agent_type, "description": s.description, "status": s.status} for s in task.steps],

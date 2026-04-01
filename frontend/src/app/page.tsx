@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnalysisResult } from '../types/business';
+import { useAuth } from '@/context/AuthContext';
 
 // Layout Components
 import { TopNav } from '../components/layout/TopNav';
@@ -22,6 +23,7 @@ import { CompetitorList } from '../components/dashboard/CompetitorList';
 import { StrategicManifest } from '../components/dashboard/StrategicManifest';
 
 export default function AgentForgeApp() {
+  const { user } = useAuth();
   const [query, setQuery] = useState('');
   const [location, setLocation] = useState('');
   const [loading, setLoading] = useState(false);
@@ -43,7 +45,11 @@ export default function AgentForgeApp() {
       const response = await fetch('http://localhost:8000/api/business/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, location }),
+        body: JSON.stringify({ 
+          user_id: user?.id || 'anonymous',
+          query, 
+          location 
+        }),
       });
 
       const data = await response.json();
@@ -52,7 +58,8 @@ export default function AgentForgeApp() {
         throw new Error(data.detail || 'Analysis failed');
       }
 
-      setResult(data);
+      // The backend now returns { task_id, status, data }
+      setResult(data.data);
       setLoading(false);
 
     } catch (error: any) {

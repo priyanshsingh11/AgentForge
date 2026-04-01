@@ -1,7 +1,7 @@
 import enum
 from datetime import datetime
 from typing import List, Optional
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Float, Enum as SQLEnum
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Float, JSON
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 class Base(DeclarativeBase):
@@ -16,7 +16,8 @@ class StatusEnum(str, enum.Enum):
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[str] = mapped_column(String(255), primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    supabase_uid: Mapped[Optional[str]] = mapped_column(String(255), unique=True, index=True)
     name: Mapped[str] = mapped_column(String(255))
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
@@ -27,10 +28,10 @@ class User(Base):
 class Task(Base):
     __tablename__ = "tasks"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     goal: Mapped[str] = mapped_column(Text)
-    status: Mapped[StatusEnum] = mapped_column(SQLEnum(StatusEnum), default=StatusEnum.PENDING)
+    status: Mapped[str] = mapped_column(String(50), default="pending")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     # Relationships
@@ -43,12 +44,12 @@ class Task(Base):
 class Step(Base):
     __tablename__ = "steps"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     task_id: Mapped[int] = mapped_column(ForeignKey("tasks.id"))
     step_number: Mapped[int] = mapped_column(Integer)
     agent_type: Mapped[str] = mapped_column(String(50))
     description: Mapped[str] = mapped_column(Text)
-    status: Mapped[StatusEnum] = mapped_column(SQLEnum(StatusEnum), default=StatusEnum.PENDING)
+    status: Mapped[str] = mapped_column(String(50), default="pending")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     # Relationships
@@ -58,7 +59,7 @@ class Step(Base):
 class Output(Base):
     __tablename__ = "outputs"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     task_id: Mapped[int] = mapped_column(ForeignKey("tasks.id"))
     content: Mapped[str] = mapped_column(Text)
     version: Mapped[int] = mapped_column(Integer, default=1)
@@ -70,12 +71,12 @@ class Output(Base):
 class Log(Base):
     __tablename__ = "logs"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     task_id: Mapped[int] = mapped_column(ForeignKey("tasks.id"))
     step_id: Mapped[Optional[int]] = mapped_column(ForeignKey("steps.id"))
     tool_used: Mapped[Optional[str]] = mapped_column(String(100))
-    input_data: Mapped[Optional[str]] = mapped_column(Text)
-    output_data: Mapped[Optional[str]] = mapped_column(Text)
+    input_data: Mapped[Optional[dict]] = mapped_column(JSON)
+    output_data: Mapped[Optional[dict]] = mapped_column(JSON)
     status: Mapped[str] = mapped_column(String(50))
     error_message: Mapped[Optional[str]] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
@@ -87,7 +88,7 @@ class Log(Base):
 class Cost(Base):
     __tablename__ = "costs"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     task_id: Mapped[int] = mapped_column(ForeignKey("tasks.id"))
     model_used: Mapped[str] = mapped_column(String(100))
     tokens_used: Mapped[int] = mapped_column(Integer)

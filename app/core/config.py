@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     GROQ_API_KEY: str
     DATABASE_URL: str
     REDIS_URL: str = "redis://localhost:6379/0"
+    SUPABASE_SERVICE_ROLE_KEY: str = ""
     
     # Business Intelligence API Keys
     GEOAPIFY_API_KEY: str = ""
