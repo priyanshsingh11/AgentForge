@@ -11,42 +11,35 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState<{ text: string; type: 'error' | 'success' }>({ text: '', type: 'error' });
   const router = useRouter();
-  const { login } = useAuth();
+  const { signIn, signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setMessage({ text: '', type: 'error' });
 
     try {
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-      const body = isLogin ? { email, password, name: 'Login' } : { email, password, name };
-      
-      const response = await fetch(`http://localhost:8000${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || 'Authentication failed');
-      }
-
       if (isLogin) {
-        // Mock user fetch or get from token
-        const user = { id: 1, name: email.split('@')[0], email }; 
-        login(data.access_token, user);
-        router.push('/');
+        const { error } = await signIn(email, password);
+        if (error) {
+          setMessage({ text: error, type: 'error' });
+        } else {
+          router.push('/');
+        }
       } else {
-        setIsLogin(true);
-        setError('Account created! Please log in.');
+        const { error } = await signUp(email, password, name);
+        if (error) {
+          setMessage({ text: error, type: 'error' });
+        } else {
+          setMessage({
+            text: 'Account created! Check your email to confirm, then sign in.',
+            type: 'success',
+          });
+          setIsLogin(true);
+        }
       }
-    } catch (err: any) {
-      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -58,7 +51,7 @@ export default function LoginPage() {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-secondary/5 blur-[150px] rounded-full pointer-events-none"></div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl z-10"
@@ -68,7 +61,9 @@ export default function LoginPage() {
             {isLogin ? 'Welcome Back' : 'Create Account'}
           </h1>
           <p className="text-white/60">
-            {isLogin ? 'Enter your credentials to access AgentForge' : 'Join the elite multi-agent intelligence platform'}
+            {isLogin
+              ? 'Enter your credentials to access AgentForge'
+              : 'Join the elite multi-agent intelligence platform'}
           </p>
         </div>
 
@@ -86,6 +81,7 @@ export default function LoginPage() {
               />
             </div>
           )}
+
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">Email Address</label>
             <input
@@ -97,6 +93,7 @@ export default function LoginPage() {
               required
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">Password</label>
             <input
@@ -106,26 +103,36 @@ export default function LoginPage() {
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
               placeholder="••••••••"
               required
+              minLength={6}
             />
           </div>
 
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {message.text && (
+            <p className={`text-sm ${message.type === 'error' ? 'text-red-400' : 'text-green-400'}`}>
+              {message.text}
+            </p>
+          )}
 
-          <button
+          <motion.button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-primary text-on-primary-fixed rounded-xl font-bold tracking-wide active:scale-[0.98] transition-all disabled:opacity-50"
+            whileTap={{ scale: 0.96, opacity: 0.85 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            className="w-full py-4 bg-primary text-on-primary-fixed rounded-xl font-bold tracking-wide shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-shadow duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Register')}
-          </button>
+            {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
+          </motion.button>
         </form>
 
         <div className="mt-8 text-center text-sm">
-          <button 
-            onClick={() => setIsLogin(!isLogin)}
+          <button
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setMessage({ text: '', type: 'error' });
+            }}
             className="text-white/40 hover:text-white transition-colors"
           >
-            {isLogin ? "Don't have an account? Create one" : "Already have an account? Sign in"}
+            {isLogin ? "Don't have an account? Create one" : 'Already have an account? Sign in'}
           </button>
         </div>
       </motion.div>
