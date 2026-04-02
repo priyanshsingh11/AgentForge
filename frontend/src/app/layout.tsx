@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AgentForge AI",
+  title: "AgentForge",
   description: "AI agents that analyze competitors and help you grow faster.",
   icons: {
     icon: "/icon.png",
