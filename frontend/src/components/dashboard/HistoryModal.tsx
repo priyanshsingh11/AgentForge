@@ -50,7 +50,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, onS
     <AnimatePresence>
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
         {/* Backdrop */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -59,7 +59,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, onS
         />
 
         {/* Modal */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -71,7 +71,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, onS
               <h3 className="text-2xl font-headline font-black text-on-surface tracking-tight">Search History</h3>
               <p className="text-xs text-on-surface-variant/40 uppercase tracking-widest mt-1">Review and restore past market analyses</p>
             </div>
-            <button 
+            <button
               onClick={onClose}
               className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"
             >
@@ -124,7 +124,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, onS
 
           {/* Footer */}
           <div className="p-6 bg-white/[0.02] border-t border-white/5 flex items-center justify-end">
-             <span className="text-[9px] font-black uppercase tracking-widest text-on-surface-variant/20 italic">Data processed via Enterprise Persistence Bridge</span>
+            <span className="text-[9px] font-black uppercase tracking-widest text-on-surface-variant/20 italic">Data processed via Enterprise Persistence Bridge</span>
           </div>
         </motion.div>
       </div>

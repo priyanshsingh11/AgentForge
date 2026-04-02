@@ -19,38 +19,38 @@ export const GoalInput: React.FC<GoalInputProps> = ({
 
   const handleUseMyLocation = () => {
     if (!navigator.geolocation) {
-       alert("Geolocation is not supported by your browser");
-       return;
+      alert("Geolocation is not supported by your browser");
+      return;
     }
 
     setIsLocating(true);
     navigator.geolocation.getCurrentPosition(
-       async (position) => {
-          const { latitude, longitude } = position.coords;
-          try {
-             // Use Geoapify Reverse Geocoding to get a readable address
-             const response = await fetch(
-                `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=eddc49298bf548b1b035af9339895d88`
-             );
-             const data = await response.json();
-             if (data.features && data.features.length > 0) {
-                const address = data.features[0].properties.city || data.features[0].properties.county || data.features[0].properties.formatted;
-                setLocation(address);
-             } else {
-                setLocation(`${latitude.toFixed(2)}, ${longitude.toFixed(2)}`);
-             }
-          } catch (error) {
-             console.error("Reverse geocoding failed", error);
-             setLocation(`${latitude.toFixed(2)}, ${longitude.toFixed(2)}`);
-          } finally {
-             setIsLocating(false);
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          // Use Geoapify Reverse Geocoding to get a readable address
+          const response = await fetch(
+            `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=eddc49298bf548b1b035af9339895d88`
+          );
+          const data = await response.json();
+          if (data.features && data.features.length > 0) {
+            const address = data.features[0].properties.city || data.features[0].properties.county || data.features[0].properties.formatted;
+            setLocation(address);
+          } else {
+            setLocation(`${latitude.toFixed(2)}, ${longitude.toFixed(2)}`);
           }
-       },
-       (error) => {
-          console.error("Geolocation failed", error);
-          alert("Unable to retrieve your location");
+        } catch (error) {
+          console.error("Reverse geocoding failed", error);
+          setLocation(`${latitude.toFixed(2)}, ${longitude.toFixed(2)}`);
+        } finally {
           setIsLocating(false);
-       }
+        }
+      },
+      (error) => {
+        console.error("Geolocation failed", error);
+        alert("Unable to retrieve your location");
+        setIsLocating(false);
+      }
     );
   };
 
@@ -70,15 +70,15 @@ export const GoalInput: React.FC<GoalInputProps> = ({
           </div>
           <div className="w-full md:w-1/3 border-l border-white/5 md:pl-6 pl-0 relative">
             <div className="flex justify-between items-center mb-2 ml-1">
-               <label className="text-[10px] font-black text-secondary/40 uppercase tracking-[0.3em]">Target Region</label>
-               <button 
-                  type="button" 
-                  onClick={handleUseMyLocation}
-                  className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-widest transition-all ${isLocating ? 'text-primary animate-pulse' : 'text-primary/40 hover:text-primary'}`}
-               >
-                  <span className="material-symbols-outlined text-sm">{isLocating ? 'progress_activity' : 'my_location'}</span>
-                  {isLocating ? 'Locating...' : 'My Location'}
-               </button>
+              <label className="text-[10px] font-black text-secondary/40 uppercase tracking-[0.3em]">Target Region</label>
+              <button
+                type="button"
+                onClick={handleUseMyLocation}
+                className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-widest transition-all ${isLocating ? 'text-primary animate-pulse' : 'text-primary/40 hover:text-primary'}`}
+              >
+                <span className="material-symbols-outlined text-sm">{isLocating ? 'progress_activity' : 'my_location'}</span>
+                {isLocating ? 'Locating...' : 'My Location'}
+              </button>
             </div>
             <input
               className="w-full bg-transparent border-none text-on-surface text-2xl placeholder:text-on-surface-variant/20 focus:ring-0 focus:outline-none py-1 font-headline font-black tracking-tight"

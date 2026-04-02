@@ -20,43 +20,36 @@ export const TopNav: React.FC = () => {
     : null;
 
   return (
-    <nav className="TopNav fixed top-0 left-0 right-0 h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant z-50 px-8 flex items-center justify-between transition-colors duration-300">
+    <nav className="TopNav fixed top-0 left-0 right-0 h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant z-50 px-8 flex items-center justify-between transition-all duration-300">
       {/* Left — Brand */}
-      <div className="flex items-center gap-8">
-        <Link href="/" className="text-lg font-bold tracking-[0.2em] text-on-surface uppercase">
+      <div className="flex items-center gap-12">
+        <Link href="/" className="text-sm font-bold tracking-[0.2em] text-on-surface uppercase whitespace-nowrap">
           AgentForge AI
         </Link>
+
       </div>
 
       {/* Right — User area */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-6">
         {user ? (
-          <>
-            {/* User email pill */}
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container border border-outline-variant">
-              <span className="material-symbols-outlined text-primary text-base" style={{ fontSize: '16px' }}>
-                person
-              </span>
-              <span className="text-sm font-medium text-on-surface/80 tracking-tight">
-                {displayName}
-              </span>
+          <div className="flex items-center gap-3">
+            {/* User display — compact like reference */}
+            <div className="w-8 h-8 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center overflow-hidden">
+              <span className="material-symbols-outlined text-primary text-[20px]">account_circle</span>
             </div>
 
-            {/* Logout button — matches sidebar bottom links style */}
+            {/* Logout button — now just an icon for cleaner look if desktop */}
             <button
               onClick={handleLogout}
               title="Sign out"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-surface-container-high hover:text-red-400 active:scale-[0.97] transition-all duration-200 text-sm font-semibold"
+              className="p-2 rounded-lg text-on-surface-variant hover:text-red-400 transition-colors"
             >
-              <span className="material-symbols-outlined text-base" style={{ fontSize: '16px' }}>
-                logout
-              </span>
-              <span>Sign out</span>
+              <span className="material-symbols-outlined text-[20px]">logout</span>
             </button>
-          </>
+          </div>
         ) : (
           <Link href="/login">
-            <button className="intelligence-gradient text-on-primary px-5 py-2 rounded-xl font-semibold active:scale-[0.98] transition-transform shadow-lg shadow-primary/20">
+            <button className="bg-on-background text-background px-5 py-2 rounded-lg text-[13px] font-bold active:scale-[0.98] transition-transform shadow-sm">
               Sign In
             </button>
           </Link>

@@ -80,10 +80,10 @@ export default function AgentForgeApp() {
       const response = await fetch('http://localhost:8000/api/business/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           user_id: user?.id || 'anonymous',
-          query, 
-          location 
+          query,
+          location
         }),
       });
 
@@ -142,24 +142,22 @@ export default function AgentForgeApp() {
   return (
     <div className="bg-background text-on-background font-body antialiased mesh-bg min-h-screen">
       <TopNav />
-      <Sidebar 
-        result={result} 
-        onNewInitiative={resetState} 
-        onShowHistory={() => setShowHistory(true)} 
+      <Sidebar
+        result={result}
+        onNewInitiative={resetState}
+        onShowHistory={() => setShowHistory(true)}
         onShowSettings={() => setShowSettings(true)}
       />
 
       <SettingsModal
         isOpen={showSettings}
         onClose={() => setShowSettings(false)}
-        theme={theme}
-        onThemeChange={toggleTheme}
         onClearHistory={handleClearHistory}
       />
 
-      <HistoryModal 
-        isOpen={showHistory} 
-        onClose={() => setShowHistory(false)} 
+      <HistoryModal
+        isOpen={showHistory}
+        onClose={() => setShowHistory(false)}
         onSelectTask={handleSelectTask}
       />
 
