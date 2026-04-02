@@ -188,30 +188,21 @@ export default function AgentForgeApp() {
 
             </motion.div>
           ) : (
-            <motion.div
-              key="dashboard"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="h-full p-8 overflow-y-auto custom-scrollbar"
-            >
-              {result ? (
-                <StrategicManifest result={result} />
-              ) : (
-                <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 max-w-[1600px] mx-auto">
-                  <MarketEngine
-                    query={query}
-                    loading={loading}
-                    result={result}
-                  />
+            <div className="h-full p-6 overflow-y-auto custom-scrollbar">
+              <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 max-w-[1440px] mx-auto pb-16 h-full">
+                <MarketEngine
+                  query={query}
+                  loading={loading}
+                  result={result}
+                />
 
-                  <div className="xl:col-span-4 flex flex-col gap-8">
-                    <LiveInsights result={null} />
-                    <CompetitorList businesses={[]} />
-                    <OutputSummary result={null} />
-                  </div>
+                <div className="xl:col-span-4 flex flex-col gap-6 h-full">
+                  <LiveInsights result={result} />
+                  <CompetitorList result={result} />
+                  <OutputSummary result={result} />
                 </div>
-              )}
-            </motion.div>
+              </div>
+            </div>
           )}
         </AnimatePresence>
       </main>

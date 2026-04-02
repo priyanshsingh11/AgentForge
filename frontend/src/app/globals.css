@@ -69,6 +69,14 @@ body {
   background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
 }
 
+.text-gradient {
+  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
 .glass-panel {
   background: var(--surface);
   backdrop-filter: blur(24px);

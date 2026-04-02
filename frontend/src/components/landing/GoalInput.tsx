@@ -55,33 +55,33 @@ export const GoalInput: React.FC<GoalInputProps> = ({
   };
 
   return (
-    <div className="w-full max-w-4xl glass-panel p-3 rounded-[2.5rem] border border-white/5 shadow-[0_50px_100px_rgba(0,0,0,0.6)] relative z-10">
-      <form onSubmit={handleAnalyze} className="relative flex flex-col md:flex-row items-center gap-6 bg-surface-container-lowest p-6 rounded-[2rem] border border-white/5 group hover:border-primary/20 transition-colors">
-        <div className="flex-1 w-full px-4 flex flex-col md:flex-row gap-6">
+    <div className="w-full max-w-4xl glass-panel p-2 rounded-[2rem] border border-white/5 shadow-[0_40px_80px_rgba(0,0,0,0.5)] relative z-10">
+      <form onSubmit={handleAnalyze} className="relative flex flex-col md:flex-row items-center gap-4 bg-surface-container-lowest p-5 rounded-[1.8rem] border border-white/5 group hover:border-primary/20 transition-colors">
+        <div className="flex-1 w-full px-2 flex flex-col md:flex-row gap-4">
           <div className="flex-1">
-            <label className="block text-[10px] font-black text-primary/40 uppercase tracking-[0.3em] mb-2 ml-1">Autonomous Goal</label>
+            <label className="block text-[9px] font-black text-primary/40 uppercase mb-1 ml-1">Autonomous Goal</label>
             <input
-              className="w-full bg-transparent border-none text-on-surface text-2xl placeholder:text-on-surface-variant/20 focus:ring-0 focus:outline-none py-1 font-headline font-black tracking-tight"
+              className="w-full bg-transparent border-none text-on-surface text-lg placeholder:text-on-surface-variant/20 focus:ring-0 focus:outline-none py-1 font-headline font-black tracking-tight"
               placeholder="e.g., 'Luxury Hotel'"
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
-          <div className="w-full md:w-1/3 border-l border-white/5 md:pl-6 pl-0 relative">
-            <div className="flex justify-between items-center mb-2 ml-1">
-              <label className="text-[10px] font-black text-secondary/40 uppercase tracking-[0.3em]">Target Region</label>
+          <div className="w-full md:w-1/3 border-l border-white/5 md:pl-4 pl-0 relative">
+            <div className="flex justify-between items-center mb-1 ml-1">
+              <label className="text-[9px] font-black text-primary/40 uppercase">Target Region</label>
               <button
                 type="button"
                 onClick={handleUseMyLocation}
-                className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-widest transition-all ${isLocating ? 'text-primary animate-pulse' : 'text-primary/40 hover:text-primary'}`}
+                className={`flex items-center gap-1 text-[9px] font-black uppercase transition-all ${isLocating ? 'text-primary animate-pulse' : 'text-primary/40 hover:text-primary'}`}
               >
-                <span className="material-symbols-outlined text-sm">{isLocating ? 'progress_activity' : 'my_location'}</span>
+                <span className="material-symbols-outlined text-xs">{isLocating ? 'progress_activity' : 'my_location'}</span>
                 {isLocating ? 'Locating...' : 'My Location'}
               </button>
             </div>
             <input
-              className="w-full bg-transparent border-none text-on-surface text-2xl placeholder:text-on-surface-variant/20 focus:ring-0 focus:outline-none py-1 font-headline font-black tracking-tight"
+              className="w-full bg-transparent border-none text-on-surface text-lg placeholder:text-on-surface-variant/20 focus:ring-0 focus:outline-none py-1 font-headline font-black tracking-tight"
               placeholder="e.g., 'London'"
               type="text"
               value={location}
@@ -89,9 +89,9 @@ export const GoalInput: React.FC<GoalInputProps> = ({
             />
           </div>
         </div>
-        <button type="submit" className="w-full md:w-auto px-10 py-5 intelligence-gradient text-on-primary-fixed font-black text-lg rounded-2xl shadow-2xl active:scale-[0.96] transition-all flex items-center justify-center gap-4 group">
+        <button type="submit" className="w-full md:w-auto px-8 py-4 intelligence-gradient text-on-primary-fixed font-black text-base rounded-xl shadow-xl active:scale-[0.96] transition-all flex items-center justify-center group">
           <span>Execute Goal</span>
-          <span className="material-symbols-outlined font-black group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          <span className="material-symbols-outlined font-black text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
         </button>
       </form>
     </div>

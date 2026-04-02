@@ -20,7 +20,7 @@ export const LiveInsights: React.FC<LiveInsightsProps> = ({ result }) => {
       <h3 className="text-xs font-black uppercase tracking-[.3em] text-on-surface-variant/40 mb-2 px-4">Live Insights</h3>
       
       {/* Growth Spike */}
-      <div className="glass-panel border border-primary/10 rounded-[2.5rem] p-8 flex flex-col gap-6 relative overflow-hidden group">
+      <div className="bg-surface border border-outline-variant rounded-[2.5rem] p-8 flex flex-col gap-6 relative overflow-hidden group shadow-sm">
          <div className="absolute top-0 right-0 p-8 text-primary/10 group-hover:text-primary/20 transition-colors">
             <span className="material-symbols-outlined scale-[3.0]">insights</span>
          </div>
@@ -41,21 +41,33 @@ export const LiveInsights: React.FC<LiveInsightsProps> = ({ result }) => {
          </div>
       </div>
 
-      {/* Sentiment Alert */}
-      <div className="bg-surface-container-high/40 border border-white/5 rounded-[2.5rem] p-8 flex flex-col gap-6 group">
+      {/* Competitor Weaknesses */}
+      <div className="bg-surface border border-outline-variant rounded-[2rem] p-6 flex flex-col gap-4 group shadow-sm">
          <div className="flex items-center justify-between">
-            <div className="bg-secondary/20 text-secondary text-[10px] font-black px-3 py-1 rounded w-fit uppercase tracking-widest">Sentiment Alert</div>
-            <span className="material-symbols-outlined text-secondary text-sm">chat_bubble</span>
+            <div className="bg-error/10 text-error text-[10px] font-black px-3 py-1 rounded w-fit uppercase tracking-widest">Market Gaps</div>
+            <span className="material-symbols-outlined text-error/60 text-sm">warning</span>
          </div>
-         <p className="text-on-surface/80 text-sm leading-relaxed">
-            {renderText(result?.sentiments?.summary) || "Analyzing customer feedback vectors across major review platforms..."}
-         </p>
-         <div className="flex items-center gap-2">
-            <div className="flex -space-x-2">
-               {[1, 2, 3].map(i => <div key={i} className="w-6 h-6 rounded-full border-2 border-background bg-surface-variant"></div>)}
+         <div>
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/60 mb-3">Competitor Weaknesses</h4>
+            <div className="space-y-3">
+               {result?.strategies?.competitor_weaknesses.slice(0, 2).map((weak, i) => (
+                  <p key={i} className="text-sm font-medium text-on-surface/70 leading-relaxed flex gap-2">
+                     <span className="text-error/40">•</span> {weak}
+                  </p>
+               ))}
             </div>
-            <span className="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-widest">+1.2k mentions</span>
          </div>
+      </div>
+
+      {/* Gap Analysis */}
+      <div className="bg-surface-container border border-outline-variant rounded-[2rem] p-6 flex flex-col gap-4 group shadow-sm">
+         <div className="flex items-center justify-between">
+            <div className="bg-primary/10 text-primary text-[10px] font-black px-3 py-1 rounded w-fit uppercase tracking-widest">Strategic Gap</div>
+            <span className="material-symbols-outlined text-primary/60 text-sm">analytics</span>
+         </div>
+         <p className="text-xs font-bold text-on-surface-variant/80 leading-relaxed italic">
+            {result?.strategies?.gap_analysis[0] || "Identifying primary friction points in current deployment stack..."}
+         </p>
       </div>
     </div>
   );
