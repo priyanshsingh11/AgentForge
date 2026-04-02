@@ -22,6 +22,7 @@ import { OutputSummary } from '../components/dashboard/OutputSummary';
 import { CompetitorList } from '../components/dashboard/CompetitorList';
 import { StrategicManifest } from '../components/dashboard/StrategicManifest';
 import { HistoryModal } from '../components/dashboard/HistoryModal';
+import { SettingsModal } from '../components/dashboard/SettingsModal';
 
 export default function AgentForgeApp() {
   const { user } = useAuth();
@@ -31,10 +32,42 @@ export default function AgentForgeApp() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   useEffect(() => {
     setIsMounted(true);
+    // Load theme from localStorage
+    const savedTheme = localStorage.getItem('agentforge-theme') as 'dark' | 'light';
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.classList.toggle('light', savedTheme === 'light');
+    }
   }, []);
+
+  const toggleTheme = (newTheme: 'dark' | 'light') => {
+    setTheme(newTheme);
+    localStorage.setItem('agentforge-theme', newTheme);
+    document.documentElement.classList.toggle('light', newTheme === 'light');
+  };
+
+  const handleClearHistory = async () => {
+    if (!user) return;
+    try {
+      const response = await fetch(`http://localhost:8000/api/task/clear/${user.id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setResult(null);
+        alert('History cleared successfully');
+      } else {
+        throw new Error('Failed to clear history');
+      }
+    } catch (error) {
+      console.error('Clear history failed:', error);
+      alert('Failed to clear history from database.');
+    }
+  };
 
 
   const handleAnalyze = async (e?: React.FormEvent) => {
@@ -113,6 +146,15 @@ export default function AgentForgeApp() {
         result={result} 
         onNewInitiative={resetState} 
         onShowHistory={() => setShowHistory(true)} 
+        onShowSettings={() => setShowSettings(true)}
+      />
+
+      <SettingsModal
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        theme={theme}
+        onThemeChange={toggleTheme}
+        onClearHistory={handleClearHistory}
       />
 
       <HistoryModal 

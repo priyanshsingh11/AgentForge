@@ -5,11 +5,12 @@ interface SidebarProps {
   result: AnalysisResult | null;
   onNewInitiative: () => void;
   onShowHistory: () => void;
+  onShowSettings: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ result, onNewInitiative, onShowHistory }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ result, onNewInitiative, onShowHistory, onShowSettings }) => {
   return (
-    <aside className="Sidebar fixed left-0 top-0 h-full w-[280px] z-40 bg-[#050505] flex flex-col pt-20 pb-8 px-6 font-body text-sm antialiased border-r border-white/5 shadow-2xl">
+    <aside className="Sidebar fixed left-0 top-0 h-full w-[280px] z-40 bg-surface-container-lowest flex flex-col pt-20 pb-8 px-6 font-body text-sm antialiased border-r border-outline-variant shadow-2xl transition-colors duration-300">
       <div className="flex items-center gap-4 mb-12 px-2">
         <div className="w-12 h-12 intelligence-gradient rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
           <span className="material-symbols-outlined text-on-primary-fixed text-2xl">bolt</span>
@@ -34,16 +35,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ result, onNewInitiative, onSho
         </a>
       </nav>
 
-      <div className="mt-auto pt-8 border-t border-white/5 space-y-1">
+      <div className="mt-auto pt-8 border-t border-outline-variant space-y-1">
         <button 
           onClick={onShowHistory}
           className="w-full flex items-center gap-3 py-2 px-4 text-on-surface-variant/30 hover:text-on-surface hover:bg-white/5 rounded-lg transition-all text-left"
         >
           <span className="material-symbols-outlined text-sm">history</span> History
         </button>
-        <a className="flex items-center gap-3 py-2 px-4 text-on-surface-variant/30 hover:text-on-surface hover:bg-white/5 rounded-lg transition-all" href="#">
+        <button 
+          onClick={onShowSettings}
+          className="w-full flex items-center gap-3 py-2 px-4 text-on-surface-variant/30 hover:text-on-surface hover:bg-white/5 rounded-lg transition-all text-left"
+        >
           <span className="material-symbols-outlined text-sm">settings</span> Settings
-        </a>
+        </button>
         <a className="flex items-center gap-3 py-2 px-4 text-on-surface-variant/30 hover:text-on-surface hover:bg-white/5 rounded-lg transition-all" href="#">
           <span className="material-symbols-outlined text-sm">pulse_alert</span> System Health
         </a>

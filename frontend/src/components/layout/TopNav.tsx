@@ -20,20 +20,12 @@ export const TopNav: React.FC = () => {
     : null;
 
   return (
-    <nav className="TopNav fixed top-0 left-0 right-0 h-16 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5 z-50 px-8 flex items-center justify-between">
+    <nav className="TopNav fixed top-0 left-0 right-0 h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant z-50 px-8 flex items-center justify-between transition-colors duration-300">
       {/* Left — Brand */}
       <div className="flex items-center gap-8">
-        <Link href="/" className="text-lg font-bold tracking-[0.2em] text-[#E1E2E7] uppercase">
+        <Link href="/" className="text-lg font-bold tracking-[0.2em] text-on-surface uppercase">
           AgentForge AI
         </Link>
-        <div className="hidden md:flex items-center gap-6">
-          <a
-            className="text-primary font-bold border-b-2 border-primary transition-all duration-300 px-3 py-1"
-            href="#"
-          >
-            Explorer
-          </a>
-        </div>
       </div>
 
       {/* Right — User area */}
@@ -41,11 +33,11 @@ export const TopNav: React.FC = () => {
         {user ? (
           <>
             {/* User email pill */}
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container border border-outline-variant">
               <span className="material-symbols-outlined text-primary text-base" style={{ fontSize: '16px' }}>
                 person
               </span>
-              <span className="text-sm font-medium text-[#E1E2E7]/80 tracking-tight">
+              <span className="text-sm font-medium text-on-surface/80 tracking-tight">
                 {displayName}
               </span>
             </div>
@@ -54,7 +46,7 @@ export const TopNav: React.FC = () => {
             <button
               onClick={handleLogout}
               title="Sign out"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-on-surface-variant/60 hover:bg-white/10 hover:text-red-400 active:scale-[0.97] transition-all duration-200 text-sm font-semibold"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-surface-container-high hover:text-red-400 active:scale-[0.97] transition-all duration-200 text-sm font-semibold"
             >
               <span className="material-symbols-outlined text-base" style={{ fontSize: '16px' }}>
                 logout
