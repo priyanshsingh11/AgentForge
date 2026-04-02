@@ -11,7 +11,7 @@ export const TopNav: React.FC = () => {
 
   const handleLogout = async () => {
     await logout();
-    router.push('/login');
+    router.push('/');
   };
 
   // Get display name: prefer full_name from metadata, fall back to email prefix
