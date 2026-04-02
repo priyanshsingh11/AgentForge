@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import delete
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from app.db.models import Task, Step, User, StatusEnum, Log, Output
@@ -106,3 +107,14 @@ class TaskService:
     async def get_task_logs(db: AsyncSession, task_id: int) -> List[Log]:
         result = await db.execute(select(Log).where(Log.task_id == task_id))
         return result.scalars().all()
+
+    @staticmethod
+    async def delete_tasks_by_user(db: AsyncSession, supabase_uid: str) -> bool:
+        """Deletes all tasks for a given user through joining with User table."""
+        # Find user first
+        user_id = await TaskService._get_or_create_user(db, supabase_uid)
+        
+        # All associated records (steps, outputs, logs, costs) will be deleted due to cascade
+        await db.execute(delete(Task).where(Task.user_id == user_id))
+        await db.commit()
+        return True

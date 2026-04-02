@@ -53,3 +53,11 @@ async def get_task_logs(task_id: int, db: AsyncSession = Depends(get_db)):
         return [{"id": l.id, "step_id": l.step_id, "tool_used": l.tool_used, "output_data": l.output_data, "status": l.status} for l in logs]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.delete("/clear/{user_id}")
+async def clear_user_tasks(user_id: str, db: AsyncSession = Depends(get_db)):
+    try:
+        success = await TaskService.delete_tasks_by_user(db, user_id)
+        return {"success": success, "message": "History cleared successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
