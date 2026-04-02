@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+
 export const TopNav: React.FC = () => {
   const { user, logout } = useAuth();
   const router = useRouter();
@@ -23,34 +24,16 @@ export const TopNav: React.FC = () => {
     <nav className="TopNav fixed top-0 left-0 right-0 h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant z-50 px-8 flex items-center justify-between transition-all duration-300">
       {/* Left — Brand */}
       <div className="flex items-center gap-12">
-        <Link href="/" className="flex items-center gap-4 group">
-          <img src="/logo.png" alt="AgentForge Logo" className="w-18 h-18 object-contain transition-transform group-hover:rotate-12" />
+        <Link href="/" className="flex items-center group">
+          <img src="/logo.png" alt="AgentForge Logo" className="w-15 h-15 object-contain transition-transform group-hover:rotate-12" />
+          <div className="flex items-center gap-2">
+            <h2 className="font-headline font-black leading-tight text-2xl tracking-tighter flex items-center">
+              <span className="text-on-surface">Agent</span>
+              <span className="text-primary">Forge</span>
+            </h2>
+            <span className="px-1.5 py-0.5 rounded-md border border-primary/30 text-primary text-[8px] font-black leading-none mt-0.5">AI</span>
+          </div>
         </Link>
-      </div>
-
-      {/* Center — Horizontal Logic Rail (Static) */}
-      <div className="hidden lg:flex items-center gap-4 px-5 py-2.5 bg-surface-container/30 rounded-full border border-outline-variant/10">
-        {[
-          { label: "Autonomous Agents", color: "bg-emerald-500" },
-          { label: "AI Agents", color: "bg-primary" },
-          { label: "Self-Learning Systems", color: "bg-purple-500" },
-          { label: "Execution Engines", color: "bg-cyan-500" },
-          { label: "Automation Pipelines", color: "bg-amber-500" },
-          { label: "Intelligent Workflows", color: "bg-rose-500" },
-          { label: "Agent Systems", color: "bg-teal-500" },
-          { label: "Task Orchestration", color: "bg-indigo-500" }
-        ].map((item, idx, arr) => (
-          <React.Fragment key={item.label}>
-            <div className="flex items-center gap-2">
-              <span className="font-headline font-black tracking-tighter leading-[0.95] text-[13px] italic ">
-                {item.label}
-              </span>
-            </div>
-            {idx < arr.length - 1 && (
-              <div className="h-3 w-[1px] bg-outline-variant/30 mx-1"></div>
-            )}
-          </React.Fragment>
-        ))}
       </div>
 
       {/* Right — User area */}

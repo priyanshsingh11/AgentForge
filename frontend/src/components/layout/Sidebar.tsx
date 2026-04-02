@@ -11,17 +11,6 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ result, onNewInitiative, onShowHistory, onShowSettings }) => {
   return (
     <aside className="Sidebar fixed left-0 top-0 h-full w-[280px] z-40 bg-surface-container-lowest flex flex-col pt-20 pb-8 px-6 font-body text-sm antialiased border-r border-outline-variant shadow-sm transition-all duration-300">
-      <div className="flex items-center gap-4 mb-6 px-2">
-        <div>
-          <div className="flex items-center gap-2">
-            <h2 className="mt-2 font-headline font-black leading-tight text-3xl tracking-tight flex items-center">
-              <span className="text-on-surface">Agent</span>
-              <span className="text-primary">Forge</span>
-            </h2>
-            <span className="px-1.5 py-0.5 rounded-md border border-primary/30 text-primary text-[8px] font-black leading-none mt-0.5">AI</span>
-          </div>
-        </div>
-      </div>
 
       <button
         onClick={onNewInitiative}

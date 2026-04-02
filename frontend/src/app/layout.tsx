@@ -13,12 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AgentForge",
-  description: "Advanced Agentic Coding & Business Intelligence",
+  title: "AgentForge AI",
+  description: "AI agents that analyze competitors and help you grow faster.",
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "/icon.png",
   },
 };
 
