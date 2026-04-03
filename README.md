@@ -1,144 +1,156 @@
-# AgentForge: Autonomous Multi-Agent Orchestration Platform
+# AgentForge: Technical Manuscript & System Architecture
 
-AgentForge is a sophisticated autonomous system designed to execute complex, multi-stage cognitive and business intelligence tasks. It employs a "Neural-Relational" architecture that integrates high-speed Large Language Models (LLMs), reactive state management, and a tiered memory system to achieve goal-directed autonomy.
+AgentForge is an autonomous, multi-agent orchestration platform designed to solve complex, high-uncertainty business and cognitive tasks. Unlike traditional LLM-based applications that are often stateless and prone to logical drift, AgentForge implements a **Neural-Relational Paradigm**. This architecture bridges the gap between high-speed stochastic inference (LLMs) and deterministic state management (Relational Databases + Distributed Caching).
 
-## Technical Architecture Overview
+---
 
-The platform is structured into three primary architectural domains: the Control Interface (Frontend), the Orchestration Core (Backend), and the Persistence Layer (Data Management).
+## 1. Architectural Thesis: The Neural-Relational Paradigm
+
+### Why was AgentForge built this way?
+Modern Large Language Models (LLMs) like Llama 3.1 are exceptional at pattern recognition and text generation but lack a "System 2" thinking process—the ability to plan, persist intermediate results, and self-correct. AgentForge was built to provide this missing logical scaffolding.
+
+The project uses a **Tiered Memory Model**:
+- **L1 (Short-term/Reactive)**: Redis-based session state for sub-millisecond telemetry synchronization.
+- **L2 (Medium-term/Semantic)**: ChromaDB vector storage for retrieving historical success patterns.
+- **L3 (Long-term/Relational)**: PostgreSQL for audit-grade logging, transaction integrity, and cost tracking.
+
+---
+
+## 2. System Topology
+
+The platform consists of three distinct yet interconnected layers:
 
 ```mermaid
 graph TD
-    subgraph "Control Interface (Next.js)"
-        UI["Telemetry Dashboard (Framer Motion)"]
-        State["Client State Management (React)"]
+    subgraph "Control Hub (Next.js 14)"
+        UI["Glassmorphic Telemetry Dashboard"]
+        State["React Context & Framer Motion State"]
     end
 
-    subgraph "Orchestration Core (FastAPI)"
-        Router["API Gateway"]
-        Graph["LangGraph Workflow Engine"]
-        
-        subgraph "Agent Cluster"
-            Planner["Planner Agent (Groq Llama 3.1)"]
-            Executor["Executor Agent (Groq Llama 3.1)"]
-            Critic["Critic Agent (Groq Llama 3.1)"]
-        end
-        
-        subgraph "Memory Subsystem"
-            Redis[("Redis: Short-term Context")]
-            Chroma[("ChromaDB: Semantic Memory")]
-        end
+    subgraph "Orchestration Logic (FastAPI)"
+        Router["API Gateway / Middleware"]
+        Loop["Agentic Control Loop (Plan-Execute-Critic)"]
+        Graph["LangGraph Workflow (Business BI)"]
     end
 
-    subgraph "Persistence Layer"
-        Postgres[("PostgreSQL: Relational Store")]
-        LLM["Inference Engine (Groq / OpenRouter)"]
-        ExtAPI["External Intelligence (Tavily / Geoapify)"]
+    subgraph "Intelligence & Memory Tier"
+        Redis[("Redis: Real-time Flux")]
+        Chroma[("ChromaDB: Semantic Context")]
+        Postgres[("PostgreSQL: Relational Archive")]
+    end
+
+    subgraph "External Intelligence Stack"
+        LLM["Groq / OpenRouter Inference"]
+        Tools["Geoapify / Tavily / HuggingFace"]
     end
 
     UI --> Router
-    Router --> Graph
-    Graph --> Planner & Executor & Critic
-    Executor --> Redis & Chroma
-    Executor --> LLM
-    Graph --> ExtAPI
+    Router --> Loop & Graph
+    Loop --> LLM & Redis
+    Graph --> Tools & LLM
+    Loop --> Postgres & Chroma
     Router --> Postgres
 ```
 
-## Agentic Orchestration Layer
+---
 
-AgentForge utilizes a specialized agent cluster, orchestrated via LangGraph, to ensure precision and quality throughout the task lifecycle.
+## 3. The Agentic Orchestration Layer
 
-### 1. Planner Agent
-The Planner is responsible for goal decomposition. Upon receiving a high-level objective, it constructs an optimized sequence of atomic tasks. This prevents logical drift and ensures a structured path toward the user's goal.
-- **Inference Model**: Llama 3.1 8B (Groq)
+AgentForge's "brain" is a cluster of specialized agents governed by an autonomous control loop (`agent_loop.py`).
 
-### 2. Executor Agent
-The Executor performs the individual tasks defined by the Planner. It leverages internal tools and external APIs to generate content, analyze data, or synthesize information. It interprets semantic context retrieved from long-term memory to maintain consistency with historical performance.
-- **Inference Model**: Llama 3.1 70B / 8B (Groq)
+### 3.1 Planner Agent (`planner.py`)
+**Role**: Goal Decomposition Engineer.
+**Logic**: When a goal arrives (e.g., "Analyze the coffee market in Noida"), the Planner uses Llama-3.1-8B-Instant via Groq to generate a JSON-enforced sequence of 3-5 atomic steps.
+**Why**: Without a plan, LLMs often suffer from "Contextual Drift," where they lose sight of the original goal mid-execution. A fixed plan provides a deterministic logical path.
 
-### 3. Critic Agent
-The Critic operates as an autonomous quality assurance layer. It evaluates the Executor's output against the original goal and the Planner’s specific instructions. If the output fails to meet a predefined quality threshold (numerical score < 8), the Critic triggers an iterative self-correction loop, providing detailed feedback to the Executor.
+### 3.2 Executor Agent (`executor.py`)
+**Role**: Task Realization Specialist.
+**Logic**: The Executor retrieves current step instructions and merges them with "Memory Context" from ChromaDB. It then invokes specialized tools (e.g., `local_search_tool`) to gather real-world data.
+**Differentiator**: It uses Llama-3.1-70B for high-fidelity reasoning when tasks require complex synthesis or analysis.
 
-## Dual-Core Memory Infrastructure
+### 3.3 Critic Agent (`critic.py`)
+**Role**: Qualitative Gatekeeper.
+**Logic**: After execution, the Critic evaluates the output against the original goal. It assigns a **Numerical Score (0-10)** and provides **Iterative Feedback**.
+**The Threshold Logic**: If the score is `< 8`, the Critic rejects the output and triggers a re-execution loop. The Executor is then re-invoked with the Critic's feedback injected into its context.
 
-To solve the limitations of stateless LLM interactions, AgentForge implements a tiered memory model inspired by biological cognitive systems.
+---
 
-### Short-term Reactive Memory (Redis)
-- **Role**: Maintains task-specific state, execution telemetry, and intermediate variables.
-- **Latency**: Sub-millisecond retrieval for real-time adjustments.
-- **Retention**: Ephemeral; bound to the lifecycle of the active task.
+## 4. Database Architecture & Relational Integrity
 
-### Long-term Semantic Memory (ChromaDB)
-- **Role**: Stores vector-indexed historical results and successful execution patterns.
-- **Mechanism**: Successful agent outputs are embedded and stored in the `db_vector` cluster.
-- **Utility**: Enables the Executor Agent to leverage "past experiences" for similar future requests.
+AgentForge uses a highly structured PostgreSQL schema (managed via SQLAlchemy Async) to ensure every action of the agents is auditable, repeatable, and billable.
 
-## Data Persistence & Schema
+### 4.1 Schema Breakdown (`models.py`)
 
-All relational data is managed via SQLAlchemy (Async) and stored in a PostgreSQL schema (compatible with Supabase). This ensures transaction integrity and a clear audit trail for every autonomous action.
+| Table | Component | Purpose |
+| :--- | :--- | :--- |
+| `users` | User Identity | Manages Supabase UIDs, emails, and global identity. |
+| `tasks` | Goal Lifecycle | Tracks the high-level objective and overall system state (`pending`, `running`, `completed`). |
+| `steps` | Atomic Execution | Stores the internal plan generated by the Planner. Each step has its own status, allowing for Resume-from-Failure logic. |
+| `outputs` | Version Cache | Every time the Critic triggers a re-iteration, a new version of the output is saved here. This allows users to see the "evolution" of the agent's thoughts. |
+| `logs` | Telemetry Trace | Comprehensive logs of tool usage, including raw inputs and outputs for every API call to Geoapify or Tavily. |
+| `costs` | Economic Tracking | Logs exact token counts and estimated USD cost per model per task, enabling enterprise-grade resource management. |
 
-- **Users Table**: Identity management and authentication metadata.
-- **Tasks Table**: Tracking for high-level goals and execution status.
-- **Steps Table**: Breakdown of individual actions generated by the Planner.
-- **Outputs Table**: Version-controlled results from the Executor-Critic loop.
-- **Log Table**: Detailed tool-use telemetry and system traces.
-- **Cost Table**: Precision tracking of token consumption and associated LLM costs.
+### 4.2 Self-Healing Migrations
+The backend includes a "Self-Healing" lifespan event in `main.py` that checks for missing columns (like `supabase_uid`) and automatically runs `ALTER TABLE` commands. This ensures a zero-downtime development experience when syncing with Supabase.
 
-## Technical Stack
+---
 
-- **Frontend**: Next.js 14 (App Router), TailwindCSS, Framer Motion, Lucide.
-- **Backend**: FastAPI, LangGraph, SQLAlchemy (AsyncPG), Pydantic.
-- **Intelligence**: Groq (Llama 3.1), Tavily Search, Geoapify Geocoding.
-- **Infrastructure**: Redis, ChromaDB, PostgreSQL.
+## 5. LangGraph: The Business BI Pipeline
 
-## API Specification
+For structured data extraction (like Market Analysis), AgentForge uses **LangGraph** (`business_graph.py`). This is a DAG (Directed Acyclic Graph) that ensures tools are executed in a specific, logical order.
 
-### Business Intelligence Workflow
-`POST /api/business/analyze`
-Starts an automated multi-agent analysis for a specific business query and location.
-- **Request Body**:
-  ```json
-  {
-    "user_id": "string",
-    "query": "string",
-    "location": "string"
-  }
-  ```
+### Topology of the Business Graph:
+1.  **Local Search (Geoapify)**: Finds real-world businesses based on latitude/longitude biases.
+2.  **Competitor Analysis**: Categorizes businesses into "Top" and "Weak" competitors based on normalized ratings.
+3.  **Sentiment Analysis (HuggingFace)**: Uses BERT-based transformers to identify "Activation Anchors" (positives) and "Friction Points" (negatives) in customer feedback.
+4.  **Trend Analysis (Tavily)**: Scours the live web for industry shifts (e.g., "AI-driven inventory in the cafe sector").
+5.  **Strategy Synthesis (OpenRouter)**: Mistral/Mixtral merges all previous node data into a structured 9-point business strategy.
 
-### Task Lifecycle Management
-`POST /api/task/create`
-Initializes a new autonomous task.
-- **Request Body**: `{ "user_id": int, "goal": "string" }`
+---
 
-`GET /api/task/detail/{task_id}`
-Retrieves the comprehensive lifecycle data for a specific task, including all intermediary steps and critiqued versions.
+## 6. Tiered Memory Architecture
 
-## System Configuration & Setup
+Memory is the differentiator of AgentForge. It solves the "Memory Bottleneck" of standard RAG systems through a multi-layer approach.
 
-### Requirements
-- Python 3.10 or higher
-- Node.js 18 or higher
-- PostgreSQL instance (Local or Supabase)
-- Redis instance
+### 6.1 L1: Reactive Memory (Redis)
+- **What it does**: Stores the "Volatile Task State."
+- **How it works**: As the Critic identifies feedback, it is written to Redis. The next agent in the sequence reads from Redis instead of recalculating state.
+- **Connection**: Directly connected into the `AgentLoop`.
 
-### Installation
+### 6.2 L2: Semantic Memory (ChromaDB)
+- **What it does**: Stores successful outputs as vector embeddings.
+- **Why**: If a user asks a similar question tomorrow, the Executor "remembers" successes by querying the `db_vector` collection using cosine similarity.
 
-#### Backend Configuration
-1. Navigate to the `app` directory.
-2. Initialize a virtual environment: `python -m venv venv`.
-3. Install dependencies: `pip install -r requirements.txt`.
-4. Create a `.env` file with the following variables:
-   - `GROQ_API_KEY`: Groq Cloud API Key.
-   - `DATABASE_URL`: Async PostgreSQL connection string.
-   - `REDIS_URL`: Redis connection string.
-   - `GEOAPIFY_API_KEY`: Geoapify API Key.
-   - `TAVILY_API_KEY`: Tavily Search API Key.
+---
 
-#### Frontend Configuration
-1. Navigate to the `frontend` directory.
-2. Install development dependencies: `npm install`.
-3. Start the development server: `npm run dev`.
+## 7. Frontend Engineering & Telemetry Dashboard
 
-## Project Governance
+The frontend is a **Next.js 14 (App Router)** application designed for real-time observability of the agent cluster.
 
-AgentForge is maintained as a high-performance orchestration framework. Contributions should prioritize architectural consistency and technical precision.
+- **Glassmorphic Design**: Uses an HSL-based color palette with backdrop-blur filters to create a premium "Command Center" aesthetic.
+- **Agent Terminal**: A simulated log feed that allows developers to see the agents' "Inner Thoughts" (Planner -> Executor -> Critic).
+- **Physics-Based UI**: Framer Motion handles all layout transitions, including the high-density grid system used for Market Engine results.
+- **State Flow**: Uses React Context (`AuthContext`) for cross-application user state and standard `fetch` with polling for task updates.
+
+---
+
+## 8. Configuration & Environment Ecosystem
+
+### Crucial Environment Variables
+- `GROQ_API_KEY`: Required for high-speed agent inference (Llama 3.1).
+- `GEOAPIFY_API_KEY`: Required for spatial mapping and business geocoding.
+- `TAVILY_API_KEY`: Required for advanced web research nodes.
+- `OPENROUTER_API_KEY`: Used for strategic synthesis (Mistral models).
+- `HUGGINGFACE_API_TOKEN`: Required for BERT-based sentiment transformers.
+
+### Setup Checklist
+1. **Database**: Provision a PostgreSQL instance (Supabase recommended).
+2. **Memory**: Start a local Redis server (default port 6379).
+3. **Inference**: Ensure Groq keys are active for low-latency agent loops.
+4. **Tooling**: Obtain API keys for the External Intelligence Stack.
+
+---
+
+## 9. Governance and Scalability
+
+AgentForge is built for modularity. Developers can add new agents by creating a new class in `app/agents/` and a corresponding node in `app/core/business_graph.py`. The system is designed to scale horizontally via FastAPI's asynchronous nature and Redis's distributed state management.
