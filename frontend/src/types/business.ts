@@ -18,11 +18,15 @@ export interface AnalysisResult {
   };
   strategies: {
     market_summary: string;
+    market_index: string;
+    market_sentiment: string;
+    competitor_velocity: string;
+    m_and_a_activity: string;
     top_competitors: string[];
     competitor_strengths: string[];
     competitor_weaknesses: string[];
     gap_analysis: string[];
-    opportunities: string[];
+    opportunities: { title: string; description: string }[];
     actionable_steps: string[];
     priority_actions: string[];
     estimated_impact: string;

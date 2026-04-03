@@ -258,9 +258,9 @@ async def strategy_generator_tool(analysis: Dict[str, Any], sentiments: Dict[str
     Uses OpenRouter API for LLM processing.
     """
     prompt = f"""
-    You are a friendly and helpful business coach. 
-    Look at the data provided and give simple, clear, and easy-to-follow advice to help a small business owner grow.
-    Avoid using complicated business words or jargon. Use words that anyone can understand.
+    You are a street-smart and helpful business strategist. 
+    Look at the data and give concrete, specific, and easy-to-follow advice to help a small business owner grow.
+    Avoid using complicated business words, jargon, or vague terms like 'immersive experiences' or 'neural indexing'. Use words that a shop owner can use to get more sales today.
     
     DATA PROVIDED:
     - COMPETITOR ANALYSIS: {analysis}
@@ -270,14 +270,18 @@ async def strategy_generator_tool(analysis: Dict[str, Any], sentiments: Dict[str
     Your output must be a valid JSON object with these EXACT keys:
     
     1. market_summary: (String) A simple explanation of what is happening in the local market.
-    2. top_competitors: (Array of Strings) Who are the main businesses nearby that people go to?
-    3. competitor_strengths: (Array of Strings) What are they doing well that people like?
-    4. competitor_weaknesses: (Array of Strings) What are they missing or doing poorly?
-    5. gap_analysis: (Array of Strings) What can our business do better than them right now?
-    6. opportunities: (Array of Strings) 4 easy ways to get more customers.
-    7. actionable_steps: (Array of Strings) Simple steps to take this week to improve.
-    8. priority_actions: (Array of Strings) The 4 most important things to do in the next 2 days.
-    9. estimated_impact: (String) A very short note on how much this will help (e.g., 'This should help you get 10% more sales soon').
+    2. market_index: (String) A percentage score (e.g., '+14.2%') indicating the market's growth potential.
+    3. market_sentiment: (String) A short label (e.g., 'Optimistic', 'Neutral', 'Vibrant').
+    4. competitor_velocity: (String) A label (e.g., 'Accelerating', 'Steady', 'Disruptive').
+    5. m_and_a_activity: (String) A label (e.g., 'High', 'Moderate', 'Low').
+    6. top_competitors: (Array of Strings) Who are the main businesses nearby that people go to?
+    7. competitor_strengths: (Array of Strings) What are they doing well that people like?
+    8. competitor_weaknesses: (Array of Strings) What are they missing or doing poorly?
+    9. gap_analysis: (Array of Strings) What can our business do better than them right now?
+    10. opportunities: (Array of Objects) 4 specific ways to get more customers. Each object must have a 'title' (short tactic) and a 'description' (how to do it in plain English with ZERO jargon).
+    11. actionable_steps: (Array of Strings) Simple steps to take this week to improve.
+    12. priority_actions: (Array of Strings) The 4 most important things to do in the next 2 days.
+    13. estimated_impact: (String) A very short note on how much this will help (e.g., 'This should help you get 10% more sales soon').
     
     CRITICAL: Keep the language simple, like you are talking to a friend who owns a shop.
     """
@@ -312,6 +316,10 @@ def _get_mock_strategies() -> Dict[str, Any]:
     """Simple and easy fallback strategies for business owners."""
     return {
         "market_summary": "People in your area are looking for more friendly and easy ways to buy things. Many old shops are not using the internet well, and customers want things to be faster and simpler.",
+        "market_index": "+14.2%",
+        "market_sentiment": "Optimistic",
+        "competitor_velocity": "Accelerating",
+        "m_and_a_activity": "Moderate",
         "top_competitors": [
             "Big Shop Nearby: They have a lot of space but are not very friendly.",
             "Online App Stores: They are fast but don't feel like a local community.",
@@ -333,10 +341,10 @@ def _get_mock_strategies() -> Dict[str, Any]:
             "They don't remember their regular customers or give them special deals."
         ],
         "opportunities": [
-            "Start selling some special local items that no one else has.",
-            "Deliver to offices nearby so workers don't have to leave.",
-            "Use simple social media posts to show the 'behind the scenes' of your shop.",
-            "Make a very simple 'Buy 5, Get 1 Free' card for regulars."
+            { "title": "Morning Pastry Bundles", "description": "Package a coffee and a croissant for a special price between 8 AM and 10 AM to attract nearby office workers on their way in." },
+            { "title": "Eco-Friendly Loyalty", "description": "Give a 5% discount to anyone who brings their own reusable bag or cup to show you care about the neighborhood's environment." },
+            { "title": "Local Business Cross-Promo", "description": "Partner with the gym next door to offer their members a free healthy sample after their workout, getting your brand in their hands." },
+            { "title": "Late Night Flash Deals", "description": "Post a 'Happy Hour' deal on social media 30 minutes before closing to clear out fresh stock and reduce daily waste." }
         ],
         "actionable_steps": [
             "Clean up the front of the shop and put up a nice, clear sign.",

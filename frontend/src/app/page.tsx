@@ -16,10 +16,14 @@ import { PresetArchitectures } from '../components/landing/PresetArchitectures';
 import { TerminalTeaser } from '../components/landing/TerminalTeaser';
 
 // Dashboard Components
+import { DashboardHeader } from '../components/dashboard/DashboardHeader';
 import { MarketEngine } from '../components/dashboard/MarketEngine';
-import { LiveInsights } from '../components/dashboard/LiveInsights';
-import { CompetitorAnalysisGrid } from '../components/dashboard/CompetitorAnalysisGrid';
-import { StrategicActionCenter } from '../components/dashboard/StrategicActionCenter';
+import { PriorityCard } from '../components/dashboard/PriorityCard';
+import { TopCompetitors } from '../components/dashboard/TopCompetitors';
+import { CompetitorInsights } from '../components/dashboard/CompetitorInsights';
+import { GapAnalysisCard } from '../components/dashboard/GapAnalysisCard';
+import { OpportunitiesCard } from '../components/dashboard/OpportunitiesCard';
+import { ActionableRoadmap } from '../components/dashboard/ActionableRoadmap';
 import { HistoryModal } from '../components/dashboard/HistoryModal';
 import { SettingsModal } from '../components/dashboard/SettingsModal';
 
@@ -196,23 +200,39 @@ export default function AgentForgeApp() {
 
             </motion.div>
           ) : (
-            <div className="h-full p-6 overflow-y-auto custom-scrollbar">
-              <div className="flex flex-col gap-12 max-w-[1440px] mx-auto pb-24">
-                {/* Section 01: Summary */}
-                <MarketEngine
-                  query={query}
-                  loading={loading}
-                  result={result}
-                />
+            <div className="h-full p-8 overflow-y-auto custom-scrollbar">
+              <div className="max-w-[1600px] mx-auto pb-24">
+                <DashboardHeader query={query} result={result} />
+                
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                  {/* Row 01: Summary & Priorities (8 / 4) */}
+                  <div className="lg:col-span-8">
+                    <MarketEngine query={query} loading={loading} result={result} />
+                  </div>
+                  <div className="lg:col-span-4">
+                    <PriorityCard result={result} />
+                  </div>
 
-                {/* Section 02: Competitors */}
-                <CompetitorAnalysisGrid result={result} />
+                  {/* Row 02: Intelligence Layer (4 / 4 / 4) */}
+                  <div className="lg:col-span-4">
+                    <TopCompetitors result={result} />
+                  </div>
+                  <div className="lg:col-span-4">
+                    <CompetitorInsights result={result} />
+                  </div>
+                  <div className="lg:col-span-4">
+                    <GapAnalysisCard result={result} />
+                  </div>
 
-                {/* Section 03: Strategy */}
-                <StrategicActionCenter result={result} />
+                  {/* Row 03: Execution Layer (4 / 8) */}
+                  <div className="lg:col-span-4">
+                    <OpportunitiesCard result={result} />
+                  </div>
+                  <div className="lg:col-span-8">
+                    <ActionableRoadmap result={result} />
+                  </div>
+                </div>
 
-                {/* Lower Section: Technical Feed */}
-                <LiveInsights result={result} />
               </div>
             </div>
           )}
