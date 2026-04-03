@@ -84,7 +84,19 @@ async def local_search_tool(query: str, location: str) -> List[Dict[str, Any]]:
                 "salon": "service.beauty",
                 "spa": "leisure.spa",
                 "clothing": "commercial.clothing",
-                "electronics": "commercial.electronics"
+                "electronics": "commercial.electronics",
+                "real estate": "service.real_estate",
+                "lawyer": "service.legal",
+                "dentist": "healthcare.dentist",
+                "car repair": "service.vehicle.repair",
+                "bar": "catering.bar",
+                "pub": "catering.pub",
+                "bookstore": "commercial.books",
+                "florist": "commercial.florist",
+                "jewelry": "commercial.jewelry",
+                "pet shop": "commercial.pet",
+                "dry cleaning": "service.dry_cleaning",
+                "accounting": "service.financial.accounting"
             }
             clean_query = query.lower().strip()
             # Try exact match or partial match
@@ -141,19 +153,25 @@ def _get_mock_businesses(query: str, location: str) -> List[Dict[str, Any]]:
     clean_query = query.lower().title()
     clean_location = location.title()
     
-    prefixes = ["The", "Elite", "Urban", "Prime", "Global", "NexGen", "Total", "Pure"]
-    suffixes = ["Hub", "Center", "Studio", "Point", "Solutions", "Dynamics", "Matrix", "Lab"]
+    prefixes = ["The", "Elite", "Urban", "Prime", "Global", "NexGen", "Total", "Pure", "Modern", "Classic"]
+    suffixes = ["Hub", "Center", "Studio", "Point", "Solutions", "Dynamics", "Matrix", "Lab", "Group", "Works"]
+    
+    # Common street names for realistic addresses
+    streets = ["Main St", "Commercial Road", "Business Ave", "Central Plaza", "Market Street", "Station Road", "Park Avenue", "Industrial Way", "Oak Avenue", "Bridge Street"]
     
     results = []
     for i in range(5):
         # Generate a name if it's not in our base data
         name = f"{random.choice(prefixes)} {clean_query} {random.choice(suffixes)}"
         
+        street_num = random.randint(10, 850)
+        street_name = random.choice(streets)
+        
         results.append({
             "name": name,
             "rating": round(random.uniform(3.8, 4.9), 1),
             "reviews": None,
-            "address": f"Strategic Sector {random.randint(1, 99)}, {clean_location}"
+            "address": f"{street_num} {street_name}, {clean_location}"
         })
     return results
 
@@ -277,7 +295,7 @@ async def strategy_generator_tool(analysis: Dict[str, Any], sentiments: Dict[str
     6. top_competitors: (Array of Strings) Who are the main businesses nearby that people go to?
     7. competitor_strengths: (Array of Strings) What are they doing well that people like?
     8. competitor_weaknesses: (Array of Strings) What are they missing or doing poorly?
-    9. gap_analysis: (Array of Strings) What can our business do better than them right now?
+    9. gap_analysis: (Array of Objects) 3-4 specific tactical areas where the business is lagging behind competitors. Each object must have a 'title', an 'impact' (Critical, High, or Medium), and a 'description' (clear explanation).
     10. opportunities: (Array of Objects) 4 specific ways to get more customers. Each object must have a 'title' (short tactic) and a 'description' (how to do it in plain English with ZERO jargon).
     11. actionable_steps: (Array of Strings) Simple steps to take this week to improve.
     12. priority_actions: (Array of Strings) The 4 most important things to do in the next 2 days.
@@ -336,9 +354,9 @@ def _get_mock_strategies() -> Dict[str, Any]:
             "Their prices are way too high for many regular people."
         ],
         "gap_analysis": [
-            "No one is open late at night or very early in the morning when people need items.",
-            "None of them use eco-friendly bags or items which people now want.",
-            "They don't remember their regular customers or give them special deals."
+            { "title": "Digital Discovery", "impact": "Critical", "description": "No online booking or visible menu. Competitors are capturing 40% of evening traffic through digital pre-orders." },
+            { "title": "Service Throughput", "impact": "High", "description": "Wait times average 12 minutes compared to the 5-minute industry benchmark for localized express services." },
+            { "title": "Price Perception", "impact": "Medium", "description": "Value-based bundles are missing. Customers feel individual items are priced 15% too high compared to nearby combos." }
         ],
         "opportunities": [
             { "title": "Morning Pastry Bundles", "description": "Package a coffee and a croissant for a special price between 8 AM and 10 AM to attract nearby office workers on their way in." },

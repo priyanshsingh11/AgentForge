@@ -59,10 +59,12 @@ export const LiveInsights: React.FC<LiveInsightsProps> = ({ result }) => {
               <span className="material-symbols-outlined text-xs text-primary/40">analytics</span>
            </div>
            <div className="space-y-4 flex-1">
-              {result?.strategies?.gap_analysis.slice(0, 2).map((gap, i) => (
+              {result?.strategies?.gap_analysis?.slice(0, 2).map((gap: any, i: number) => (
                 <div key={i} className="flex gap-3 items-start">
                    <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-1"></div>
-                   <p className="text-[11px] font-medium text-on-surface-variant/80">{gap}</p>
+                   <p className="text-[11px] font-medium text-on-surface-variant/80">
+                     {typeof gap === 'string' ? gap : gap.title}
+                   </p>
                 </div>
               ))}
            </div>

@@ -25,7 +25,7 @@ export interface AnalysisResult {
     top_competitors: string[];
     competitor_strengths: string[];
     competitor_weaknesses: string[];
-    gap_analysis: string[];
+    gap_analysis: { title: string; impact: string; description: string }[];
     opportunities: { title: string; description: string }[];
     actionable_steps: string[];
     priority_actions: string[];
