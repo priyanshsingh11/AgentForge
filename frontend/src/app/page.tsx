@@ -24,6 +24,8 @@ import { StrategicManifest } from '../components/dashboard/StrategicManifest';
 import { HistoryModal } from '../components/dashboard/HistoryModal';
 import { SettingsModal } from '../components/dashboard/SettingsModal';
 
+import { AuthModal } from '../components/auth/AuthModal';
+
 export default function AgentForgeApp() {
   const { user } = useAuth();
   const [query, setQuery] = useState('');
@@ -33,6 +35,7 @@ export default function AgentForgeApp() {
   const [isMounted, setIsMounted] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   useEffect(() => {
@@ -141,7 +144,13 @@ export default function AgentForgeApp() {
 
   return (
     <div className="bg-background text-on-background font-body antialiased mesh-bg min-h-screen">
-      <TopNav />
+      <TopNav onSignIn={() => setShowAuthModal(true)} />
+      
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)} 
+      />
+
       <Sidebar
         result={result}
         onNewInitiative={resetState}

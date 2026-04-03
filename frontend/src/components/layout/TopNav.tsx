@@ -6,7 +6,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 
-export const TopNav: React.FC = () => {
+interface TopNavProps {
+  onSignIn: () => void;
+}
+
+export const TopNav: React.FC<TopNavProps> = ({ onSignIn }) => {
   const { user, logout } = useAuth();
   const router = useRouter();
 
@@ -25,7 +29,7 @@ export const TopNav: React.FC = () => {
       {/* Left — Brand */}
       <div className="flex items-center gap-12">
         <Link href="/" className="flex items-center group">
-          <img src="/logo.png" alt="AgentForge Logo" className="w-15 h-15 object-contain transition-transform group-hover:rotate-12" />
+          <img src="/logo.png" alt="AgentForge Logo" className="w-15 h-15 object-contain transition-transform" />
           <div className="flex items-center gap-2">
             <h2 className="font-headline font-black leading-tight text-2xl tracking-tighter flex items-center">
               <span className="text-on-surface">Agent</span>
@@ -52,12 +56,13 @@ export const TopNav: React.FC = () => {
             </button>
           </div>
         ) : (
-          <Link href="/login">
-            <button className="bg-surface-container border border-outline-variant text-on-surface px-6 py-2.5 rounded-xl text-[13px] font-black hover:bg-surface-container-high hover:border-primary/40 active:scale-[0.98] transition-all shadow-xl shadow-black/20 group flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] opacity-40 group-hover:opacity-100 group-hover:text-primary transition-all">login</span>
-              Sign In
-            </button>
-          </Link>
+          <button
+            onClick={onSignIn}
+            className="bg-surface-container border border-outline-variant text-on-surface px-6 py-2.5 rounded-xl text-[13px] font-black hover:bg-surface-container-high hover:border-primary/40 active:scale-[0.98] transition-all shadow-xl shadow-black/20 group flex items-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[20px] opacity-40 group-hover:opacity-100 group-hover:text-primary transition-all">login</span>
+            Sign In
+          </button>
         )}
       </div>
     </nav>
