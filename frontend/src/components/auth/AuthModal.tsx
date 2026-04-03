@@ -100,9 +100,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 <span className="text-on-surface">Agent</span>
                 <span className="text-primary">Forge</span>
               </h1>
-              <p className="text-on-surface-variant text-[11px] uppercase tracking-[0.4em] font-black opacity-60">
-                Command Center Access
-              </p>
             </div>
 
             {/* TAB SWITCHER */}
