@@ -18,9 +18,8 @@ import { TerminalTeaser } from '../components/landing/TerminalTeaser';
 // Dashboard Components
 import { MarketEngine } from '../components/dashboard/MarketEngine';
 import { LiveInsights } from '../components/dashboard/LiveInsights';
-import { OutputSummary } from '../components/dashboard/OutputSummary';
-import { CompetitorList } from '../components/dashboard/CompetitorList';
-import { StrategicManifest } from '../components/dashboard/StrategicManifest';
+import { CompetitorAnalysisGrid } from '../components/dashboard/CompetitorAnalysisGrid';
+import { StrategicActionCenter } from '../components/dashboard/StrategicActionCenter';
 import { HistoryModal } from '../components/dashboard/HistoryModal';
 import { SettingsModal } from '../components/dashboard/SettingsModal';
 
@@ -145,10 +144,10 @@ export default function AgentForgeApp() {
   return (
     <div className="bg-background text-on-background font-body antialiased mesh-bg min-h-screen">
       <TopNav onSignIn={() => setShowAuthModal(true)} />
-      
-      <AuthModal 
-        isOpen={showAuthModal} 
-        onClose={() => setShowAuthModal(false)} 
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
       />
 
       <Sidebar
@@ -198,18 +197,22 @@ export default function AgentForgeApp() {
             </motion.div>
           ) : (
             <div className="h-full p-6 overflow-y-auto custom-scrollbar">
-              <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 max-w-[1440px] mx-auto pb-16 h-full">
+              <div className="flex flex-col gap-12 max-w-[1440px] mx-auto pb-24">
+                {/* Section 01: Summary */}
                 <MarketEngine
                   query={query}
                   loading={loading}
                   result={result}
                 />
 
-                <div className="xl:col-span-4 flex flex-col gap-6 h-full">
-                  <LiveInsights result={result} />
-                  <CompetitorList result={result} />
-                  <OutputSummary result={result} />
-                </div>
+                {/* Section 02: Competitors */}
+                <CompetitorAnalysisGrid result={result} />
+
+                {/* Section 03: Strategy */}
+                <StrategicActionCenter result={result} />
+
+                {/* Lower Section: Technical Feed */}
+                <LiveInsights result={result} />
               </div>
             </div>
           )}

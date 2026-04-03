@@ -1,73 +1,100 @@
 import React from 'react';
 import { AnalysisResult } from '../../types/business';
+import { motion } from 'framer-motion';
 
 interface LiveInsightsProps {
   result: AnalysisResult | null;
 }
 
 export const LiveInsights: React.FC<LiveInsightsProps> = ({ result }) => {
-  // Defensive rendering helper
   const renderText = (val: any) => {
     if (!val) return "";
     if (typeof val === 'string') return val;
     if (Array.isArray(val)) return val.join(" ");
-    if (typeof val === 'object') return JSON.stringify(val);
     return String(val);
   };
 
+  if (!result) return null;
+
   return (
-    <div className="flex flex-col gap-6">
-      <h3 className="text-xs font-black uppercase tracking-[.3em] text-on-surface-variant/40 mb-2 px-4">Live Insights</h3>
-      
-      {/* Growth Spike */}
-      <div className="bg-surface border border-outline-variant rounded-[2.5rem] p-8 flex flex-col gap-6 relative overflow-hidden group shadow-sm">
-         <div className="absolute top-0 right-0 p-8 text-primary/10 group-hover:text-primary/20 transition-colors">
-            <span className="material-symbols-outlined scale-[3.0]">insights</span>
-         </div>
-         <div className="flex items-center justify-between">
-            <div className="bg-primary/20 text-primary text-[10px] font-black px-3 py-1 rounded w-fit uppercase tracking-widest">Market Intel</div>
-            <div className="flex items-center gap-2">
-               <span className="text-[10px] font-black text-on-surface-variant/40 uppercase">Impact</span>
-               <span className="text-xs font-black text-primary">{renderText(result?.strategies?.estimated_impact) || 'HIGH'}</span>
-            </div>
-         </div>
-         <p className="text-on-surface/80 text-sm leading-relaxed relative z-10 font-medium">
-            {renderText(result?.strategies?.market_summary) || "Intelligence cluster initialized. Scanning hyper-local market vectors for strategic anomalies..."}
-         </p>
-         <div className="flex items-end gap-2 h-16 pt-4 relative z-10">
-            {[40, 60, 45, 80, 100].map((h, i) => (
-              <div key={i} className={`flex-1 rounded-sm ${i === 4 ? 'intelligence-gradient' : 'bg-white/5'}`} style={{ height: `${h}%` }}></div>
-            ))}
-         </div>
+    <div className="flex flex-col gap-6 w-full pt-8 border-t border-outline-variant/30">
+      <div className="flex items-center justify-between px-2">
+        <div className="flex items-center gap-3">
+          <span className="material-symbols-outlined text-primary text-sm animate-pulse">settings_input_component</span>
+          <h3 className="text-[10px] font-black uppercase tracking-[.4em] text-on-surface-variant/60">Lower Deck: System Intelligence & Live Feed</h3>
+        </div>
+        <div className="flex items-center gap-6">
+           <div className="flex items-center gap-2">
+              <span className="text-[9px] font-black text-on-surface-variant/40 uppercase tracking-widest">Neural Link</span>
+              <span className="text-[10px] font-black text-emerald-500 uppercase">Stable</span>
+           </div>
+           <div className="flex items-center gap-2">
+              <span className="text-[9px] font-black text-on-surface-variant/40 uppercase tracking-widest">Protocol</span>
+              <span className="text-[10px] font-black text-primary uppercase">v2.0.4-Alpha</span>
+           </div>
+        </div>
       </div>
 
-      {/* Competitor Weaknesses */}
-      <div className="bg-surface border border-outline-variant rounded-[2rem] p-6 flex flex-col gap-4 group shadow-sm">
-         <div className="flex items-center justify-between">
-            <div className="bg-error/10 text-error text-[10px] font-black px-3 py-1 rounded w-fit uppercase tracking-widest">Market Gaps</div>
-            <span className="material-symbols-outlined text-error/60 text-sm">warning</span>
-         </div>
-         <div>
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/60 mb-3">Competitor Weaknesses</h4>
-            <div className="space-y-3">
-               {result?.strategies?.competitor_weaknesses.slice(0, 2).map((weak, i) => (
-                  <p key={i} className="text-sm font-medium text-on-surface/70 leading-relaxed flex gap-2">
-                     <span className="text-error/40">•</span> {weak}
-                  </p>
-               ))}
-            </div>
-         </div>
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Market Sentiment / Stream */}
+        <div className="bg-surface-container/20 border border-outline-variant rounded-3xl p-6 flex flex-col gap-4 shadow-inner">
+           <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40">Market Sentiment Stream</span>
+              <span className="material-symbols-outlined text-xs text-primary/40">sensors</span>
+           </div>
+           <p className="text-xs font-medium text-on-surface/60 leading-relaxed italic">
+              "{renderText(result?.strategies?.market_summary).slice(0, 120)}..."
+           </p>
+           <div className="flex items-end gap-1 h-3 mt-auto">
+              {[20, 40, 30, 80, 50, 90, 70, 40].map((h, i) => (
+                <div key={i} className={`flex-1 rounded-full ${i === 5 ? 'bg-primary' : 'bg-primary/20'}`} style={{ height: `${h}%` }}></div>
+              ))}
+           </div>
+        </div>
 
-      {/* Gap Analysis */}
-      <div className="bg-surface-container border border-outline-variant rounded-[2rem] p-6 flex flex-col gap-4 group shadow-sm">
-         <div className="flex items-center justify-between">
-            <div className="bg-primary/10 text-primary text-[10px] font-black px-3 py-1 rounded w-fit uppercase tracking-widest">Strategic Gap</div>
-            <span className="material-symbols-outlined text-primary/60 text-sm">analytics</span>
-         </div>
-         <p className="text-xs font-bold text-on-surface-variant/80 leading-relaxed italic">
-            {result?.strategies?.gap_analysis[0] || "Identifying primary friction points in current deployment stack..."}
-         </p>
+        {/* Gap Analysis Summary */}
+        <div className="bg-surface-container/20 border border-outline-variant rounded-3xl p-6 flex flex-col gap-4 shadow-inner">
+           <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40">Strategic Gap Protocol</span>
+              <span className="material-symbols-outlined text-xs text-primary/40">analytics</span>
+           </div>
+           <div className="space-y-4 flex-1">
+              {result?.strategies?.gap_analysis.slice(0, 2).map((gap, i) => (
+                <div key={i} className="flex gap-3 items-start">
+                   <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-1"></div>
+                   <p className="text-[11px] font-medium text-on-surface-variant/80">{gap}</p>
+                </div>
+              ))}
+           </div>
+        </div>
+
+        {/* Impact / Performance */}
+        <div className="bg-surface-container/20 border border-outline-variant rounded-3xl p-6 flex flex-col gap-4 shadow-inner relative overflow-hidden">
+           <div className="absolute top-0 right-0 p-6 opacity-[0.05]">
+              <span className="material-symbols-outlined text-[100px]">monitoring</span>
+           </div>
+           <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40">Impact Forecast</span>
+              <span className="material-symbols-outlined text-xs text-primary/40">trending_up</span>
+           </div>
+           <div className="mt-2">
+              <span className="text-4xl font-headline font-black text-on-surface uppercase tracking-tighter">
+                {renderText(result?.strategies?.estimated_impact) || 'High'}
+              </span>
+              <div className="h-[2px] w-full bg-outline-variant/30 rounded-full mt-4 overflow-hidden">
+                <motion.div 
+                  className="h-full bg-primary" 
+                  initial={{ width: 0 }}
+                  animate={{ width: '84%' }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                />
+              </div>
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-[8px] font-black text-on-surface-variant/40 uppercase tracking-widest">Probability: 84%</span>
+                <span className="text-[8px] font-black text-primary uppercase tracking-widest">Optimal Deployment</span>
+              </div>
+           </div>
+        </div>
       </div>
     </div>
   );
