@@ -4,6 +4,51 @@ AgentForge is an autonomous, multi-agent orchestration platform designed to solv
 
 ---
 
+## 0. The AgentForge Tech Stack: From Zero to Hero
+
+AgentForge's architecture is a fusion of high-speed inference, async-first backend engineering, and reactive frontend design.
+
+### 🧠 Core AI & Intelligence Engine
+- **Orchestration**: Custom Multi-Agent Control Loop (Planner, Executor, Critic)
+- **Inference Engines**: [Groq API](https://groq.com/) (Main Inference), [OpenRouter](https://openrouter.ai/) (Strategic Synthesis)
+- **Primary Model**: [Llama 3.1 8B/70B Instant](https://ai.meta.com/blog/meta-llama-3-1/)
+- **Semantic Memory**: [ChromaDB](https://www.trychroma.com/) (Vector Store for historical persistence)
+- **Workflow DAG**: [LangGraph](https://www.langchain.com/langgraph) (Deterministic business BI pipelines)
+- **Sentiment Engine**: [HuggingFace Inference](https://huggingface.co/docs/api-inference/index) (DistilBERT-based Transformers)
+
+### ⚙️ Distributed Nervous System (Backend)
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) (High-performance, fully asynchronous)
+- **Runtime**: [Uvicorn](https://www.uvicorn.org/) (Standard ASGI)
+- **State Management**: [Redis](https://redis.io/) (Inter-agent telemetry and L1 caching)
+- **Relational ORM**: [SQLAlchemy 2.0](https://www.sqlalchemy.org/) (Async engine support)
+- **Data Integrity**: [Pydantic v2](https://docs.pydantic.dev/latest/) (Strict type enforcement & validation)
+- **Async Networking**: [HTTPX](https://www.python-httpx.org/) (High-concurrency API orchestration)
+- **Security Protocols**: [PyJWT](https://pyjwt.readthedocs.io/) (Tokenization), [Passlib](https://passlib.readthedocs.io/) (Bcrypt hashing)
+
+### 🖥️ Telemetry Command Center (Frontend)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router & React Server Components)
+- **Core Library**: [React 19](https://react.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/) (Strictly typed architecture)
+- **Styling Architecture**: [Tailwind CSS 4](https://tailwindcss.com/) (Utility-first, modern JIT engine)
+- **Motion & Physics**: [Framer Motion](https://www.framer.com/motion/) (High-performance UI transitions)
+- **Iconography**: [Lucide React](https://lucide.dev/) (Scalable vector glyphs)
+
+### 🌐 External Intelligence Prism (APIs)
+- **Spatial Mapping**: [Geoapify](https://www.geoapify.com/) (Geocoding & Places Radar)
+- **Deep Research**: [Tavily AI](https://tavily.com/) (Advanced web search & trends)
+- **Authentication**: [Supabase Auth](https://supabase.com/auth) (Global identity management)
+
+### 🏗️ Infrastructure & Dev Environment
+- **Database Architecture**: [PostgreSQL (via Supabase)](https://supabase.com/)
+- **Configuration**: [python-dotenv](https://saurabh-kumar.com/python-dotenv/)
+- **Migration Logic**: Custom Self-Healing SQLAlchemy Life-Cycle events
+- **Memory Tiering**: 3-Layered (L1: Redis, L2: ChromaDB, L3: PostgreSQL)
+
+---
+
+
+---
+
 ## 1. Architectural Thesis: The Neural-Relational Paradigm
 
 ### Why was AgentForge built this way?
