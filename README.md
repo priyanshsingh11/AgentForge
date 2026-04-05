@@ -4,7 +4,7 @@ AgentForge is an autonomous, multi-agent orchestration platform designed to solv
 
 ---
 
-## 0. The AgentForge Tech Stack: From Zero to Hero
+##  The AgentForge Tech Stack: From Zero to Hero
 
 AgentForge's architecture is a fusion of high-speed inference, async-first backend engineering, and reactive frontend design.
 
