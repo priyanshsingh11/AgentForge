@@ -1,6 +1,9 @@
 from langchain.tools import tool
 import httpx
+import json
+import hashlib
 from app.core.config import settings
+from app.core.redis_client import redis_memory
 from typing import List, Dict, Any
 import logging
 import random
@@ -37,6 +40,18 @@ async def local_search_tool(query: str, location: str) -> List[Dict[str, Any]]:
     Fetches businesses based on query and location using Geoapify Geocoding and Places API.
     Returns: name, rating, reviews (None), address.
     """
+    # 0. Normalize inputs for consistent caching
+    n_query = query.lower().strip()
+    n_location = location.lower().strip()
+    cache_key = f"tool:local_search:{hashlib.sha256(f'{n_query}:{n_location}'.encode()).hexdigest()}"
+    try:
+        cached = await redis_memory.get_cache(cache_key)
+        if cached:
+            logger.info(f"Local Search Cache Hit for {query} in {location}")
+            return cached
+    except Exception as e:
+        logger.warning(f"Failed to check local search cache: {e}")
+
     api_key = settings.GEOAPIFY_API_KEY
     
     # 1. Geocode the location to get coordinates
@@ -141,6 +156,13 @@ async def local_search_tool(query: str, location: str) -> List[Dict[str, Any]]:
             if not businesses:
                 return _get_mock_businesses(query, location)
                 
+            # 3. Save to Cache (expires in 12 hours)
+            try:
+                await redis_memory.set_cache(cache_key, businesses, ttl=43200)
+                logger.info(f"Local Search Cache Miss. Saved results for {query} in {location}")
+            except Exception as e:
+                logger.warning(f"Failed to save local search cache: {e}")
+
             return businesses
     except Exception as e:
         logger.error(f"Error in local_search_tool: {e}")
@@ -148,6 +170,11 @@ async def local_search_tool(query: str, location: str) -> List[Dict[str, Any]]:
 
 def _get_mock_businesses(query: str, location: str) -> List[Dict[str, Any]]:
     """Helper to return realistic mock data that adapts to any query/location."""
+    # Use a local Random instance with a stable seed based on input for caching consistency
+    seed_str = f"{query.lower().strip()}:{location.lower().strip()}"
+    seed = int(hashlib.md5(seed_str.encode()).hexdigest(), 16)
+    local_rnd = random.Random(seed)
+    
     logger.info(f"Generating dynamic mock businesses for {query} in {location}")
     
     clean_query = query.lower().title()
@@ -162,14 +189,14 @@ def _get_mock_businesses(query: str, location: str) -> List[Dict[str, Any]]:
     results = []
     for i in range(5):
         # Generate a name if it's not in our base data
-        name = f"{random.choice(prefixes)} {clean_query} {random.choice(suffixes)}"
+        name = f"{local_rnd.choice(prefixes)} {clean_query} {local_rnd.choice(suffixes)}"
         
-        street_num = random.randint(10, 850)
-        street_name = random.choice(streets)
+        street_num = local_rnd.randint(10, 850)
+        street_name = local_rnd.choice(streets)
         
         results.append({
             "name": name,
-            "rating": round(random.uniform(3.8, 4.9), 1),
+            "rating": round(local_rnd.uniform(3.8, 4.9), 1),
             "reviews": None,
             "address": f"{street_num} {street_name}, {clean_location}"
         })
@@ -213,6 +240,17 @@ async def review_sentiment_tool(reviews: List[str] = None) -> Dict[str, Any]:
             "Too expensive for the quality",
             "Staff was friendly"
         ]
+
+    # 0. Check Redis Cache
+    cache_data = json.dumps(reviews, sort_keys=True)
+    cache_key = f"tool:sentiment:{hashlib.sha256(cache_data.encode()).hexdigest()}"
+    try:
+        cached = await redis_memory.get_cache(cache_key)
+        if cached:
+            logger.info("Sentiment Analysis Cache Hit")
+            return cached
+    except Exception as e:
+        logger.warning(f"Failed to check sentiment cache: {e}")
         
     # Updated to a more standard model path
     model_id = "distilbert-base-uncased-finetuned-sst-2-english"
@@ -248,7 +286,16 @@ async def review_sentiment_tool(reviews: List[str] = None) -> Dict[str, Any]:
                     negatives.append(review_text)
                     
             summary = f"Neural analysis complete: Cluster identified {len(positives)} positive engagement anchors and {len(negatives)} area(s) for optimization."
-            return {"positives": positives, "negatives": negatives, "summary": summary}
+            result = {"positives": positives, "negatives": negatives, "summary": summary}
+
+            # 3. Save to Cache
+            try:
+                await redis_memory.set_cache(cache_key, result, ttl=43200)
+                logger.info("Sentiment Analysis Cache Miss. Saved results.")
+            except Exception as e:
+                logger.warning(f"Failed to save sentiment cache: {e}")
+
+            return result
             
     except Exception as e:
         logger.error(f"Error in review_sentiment_tool: {e}")
@@ -275,6 +322,17 @@ async def strategy_generator_tool(analysis: Dict[str, Any], sentiments: Dict[str
     Generates a highly structured 9-point business strategy.
     Uses OpenRouter API for LLM processing.
     """
+    # 0. Check Redis Cache
+    cache_inputs = json.dumps({"analysis": analysis, "sentiments": sentiments, "trends": trends}, sort_keys=True)
+    cache_key = f"tool:strategy:{hashlib.sha256(cache_inputs.encode()).hexdigest()}"
+    try:
+        cached = await redis_memory.get_cache(cache_key)
+        if cached:
+            logger.info("Strategy Generation Cache Hit")
+            return cached
+    except Exception as e:
+        logger.warning(f"Failed to check strategy cache: {e}")
+        
     prompt = f"""
     You are a street-smart and helpful business strategist. 
     Look at the data and give concrete, specific, and easy-to-follow advice to help a small business owner grow.
@@ -320,11 +378,17 @@ async def strategy_generator_tool(analysis: Dict[str, Any], sentiments: Dict[str
             data = response.json()
             content = data["choices"][0]["message"]["content"]
             
-            import json
             start = content.find("{")
             end = content.rfind("}") + 1
             if start != -1 and end != -1:
-                return json.loads(content[start:end])
+                result = json.loads(content[start:end])
+                # 3. Save to Cache
+                try:
+                    await redis_memory.set_cache(cache_key, result, ttl=43200)
+                    logger.info("Strategy Generation Cache Miss. Saved results.")
+                except Exception as e:
+                    logger.warning(f"Failed to save strategy cache: {e}")
+                return result
             return _get_mock_strategies()
     except Exception as e:
         logger.error(f"Error in strategy_generator_tool: {e}")
@@ -387,6 +451,17 @@ async def web_search_tool(query: str) -> Dict[str, Any]:
     """
     Performs web search to find latest industry trends using Tavily API.
     """
+    # 0. Normalize inputs for consistent caching
+    n_query = query.lower().strip()
+    cache_key = f"tool:web_search:{hashlib.sha256(n_query.encode()).hexdigest()}"
+    try:
+        cached = await redis_memory.get_cache(cache_key)
+        if cached:
+            logger.info(f"Web Search Cache Hit for {query}")
+            return cached
+    except Exception as e:
+        logger.warning(f"Failed to check web search cache: {e}")
+
     url = "https://api.tavily.com/search"
     payload = {
         "api_key": settings.TAVILY_API_KEY,
@@ -401,9 +476,19 @@ async def web_search_tool(query: str) -> Dict[str, Any]:
             data = response.json()
             
             trends = []
-            for result in data.get("results", [])[:3]:
-                trends.append(result.get("content", ""))
-            return {"results": trends}
+            for result_item in data.get("results", [])[:3]:
+                trends.append(result_item.get("content", ""))
+            
+            result = {"results": trends}
+            
+            # 3. Save to Cache
+            try:
+                await redis_memory.set_cache(cache_key, result, ttl=43200)
+                logger.info(f"Web Search Cache Miss. Saved results for {query}")
+            except Exception as e:
+                logger.warning(f"Failed to save web search cache: {e}")
+
+            return result
     except Exception as e:
         logger.error(f"Error in web_search_tool: {e}")
         return {

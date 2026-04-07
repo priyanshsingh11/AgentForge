@@ -49,6 +49,24 @@ class RedisMemory:
             await self._redis.delete(*keys)
             logger.info(f"Cleared Redis state for task {task_id}")
 
+    async def set_cache(self, key: str, value: Any, ttl: int = 86400):
+        """
+        Sets a general cache value with an expiration (TTL).
+        Default is 24 hours.
+        """
+        if not self._redis: await self.connect()
+        full_key = f"cache:{key}"
+        await self._redis.set(full_key, json.dumps(value), ex=ttl)
+
+    async def get_cache(self, key: str) -> Optional[Any]:
+        """
+        Retrieves a value from the general cache.
+        """
+        if not self._redis: await self.connect()
+        full_key = f"cache:{key}"
+        val = await self._redis.get(full_key)
+        return json.loads(val) if val else None
+
     async def close(self):
         if self._redis:
             await self._redis.close()
